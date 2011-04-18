@@ -1,0 +1,3 @@
+sitesdir='/var/www/sites'
+formatter=(fltr_cache markdown)
+debug=()

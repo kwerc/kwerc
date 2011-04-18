@@ -22,6 +22,35 @@ a:hover {
 	max-width: 50em;
 }
 
+#offsite {
+	background-color: #ccc;
+	padding: 0.5ex 0 0.5ex 0;
+	margin: 0;
+	-moz-box-shadow: 0 0 1ex #666;
+	-webkit-box-shadow: 0 0 1ex #666;
+	box-shadow: 0 0 1ex #666;
+	text-align: center;
+	font-size: 84%;
+}
+
+#offsite a {
+	margin: 0;
+	padding: 0.5ex 1em 0.5ex 1em;
+}
+
+#offsite a:hover {
+	color: #36c;
+	background-color: #ddd;
+}
+
+#offsite a.current {
+	background-color: #eee;
+	color: #333;
+	-moz-box-shadow: 0 0 0.5ex #fff;
+	-webkit-box-shadow: 0 0 0.5ex #fff;
+	box-shadow: 0 0 0.5ex #fff;
+}
+
 #header {
 	clear: both;
 	color: #666;
