@@ -1,8 +1,12 @@
 # Werc builtin handlers
 
 fn nav_tree {
-    if(! ~ $#sideBarNavTitle 0)
-        echo '<p class="sideBarTitle">'$"sideBarNavTitle':</p>'
+
+    echo '<ul>'
+    if(~ $"req_paths_list /)
+        echo '<li><a href="/" class="current">Home</a></li>'
+    if not
+        echo '<li><a href="/">Home</a></li>'
     # Ignore stderr, last path element might be a file that doesn't exist (eg., foo for foo.md)
     # /./ to deal with p9p's ls failure to follow dir symlinks otherwise
     ls -F $sitedir/./$req_paths_list >[2]/dev/null \
@@ -11,15 +15,15 @@ fn nav_tree {
             if(! ~ $#synth_paths 0) echo $synth_paths | tr ' ' $NEW_LINE 
         } | sort -u | awk -F/ ' 
     function p(x, y, s) { for(i=0; i < x-y; i+=1) print s }
-    BEGIN { lNF=2; print "<ul>" }
+    BEGIN { lNF=2; }
     { 
         d = ""
         if(match($0, "/$"))
             d = "/"
         sub("/$", "") # Strip trailing / for dirs so NF is consistent 
 
-        p(NF, lNF, "<li><ul>")
-        p(lNF, NF, "</ul></li>")
+        print "<li>";
+        p(NF, lNF, "&nbsp;")
         lNF = NF
 
         bname = $NF d
@@ -31,11 +35,13 @@ fn nav_tree {
         gsub(/[^\/]$/, "&/", pa) 
 
         if(index(ENVIRON["req_path"] "/", pa) == 1)
-            print "<li><a href=\"" path "\" class=\"thisPage\">&raquo;<i> " bname "</i></a></li>"
+            print "<a href=\"" path "\" class=\"current\">" bname "</a>"
         else 
-            print "<li><a href=\"" path "\">&rsaquo; " bname "</a></li>"
+            print "<a href=\"" path "\">" bname "</a>"
+
+        print "</li>"
     }
-    END { p(lNF, 2, "</ul></li>"); print "</ul>" }'
+    END { print "</ul>" }'
 }
 
 fn link_bar {

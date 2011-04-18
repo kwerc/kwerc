@@ -1,26 +1,26 @@
-<div id="header">
-    <div class="superHeader">
-% cat `{ get_lib_file top_bar.inc }
-    </div>
+<!--
+	<div id="offsite">
+		<a class="current" href="http://garbe.us">Home</a>
+		<a href="http://blog.garbe.us">Blog</a>
+	</div>
+-->
 
-    <div class="midHeader">
-    <h1 class="headerTitle"><a href="/">%($"siteTitle%) <span id="headerSubTitle">%($"siteSubTitle%)</span></a></h1>
-    </div>
-    
-    <div class="subHeader"><br></div>
-</div>
+	<div id="innerbody">
 
+	<div id="header">
+		<a href="/">%($"siteTitle%) <span id="headerSubTitle">%($"siteSubTitle%)</span></a>
+	</div>
+
+	<div id="content">
 % if(! ~ $#handlers_bar_left 0) {
-    <div id="side-bar">
+	<div id="nav">
 %   for(h in $handlers_bar_left) {
-        <div>
 %       run_handler $$h
-        </div>
 %   }
-    </div>
+	</div>
 % }
 
-<div id="main-copy">
+	<div id="main">
 
 % run_handlers $handlers_body_head
 
@@ -28,8 +28,18 @@
 
 % run_handlers $handlers_body_foot
 
-</div>
+	</div>
+	</div>
 
-<div id="footer">
-% cat `{ get_lib_file footer.inc }
-</div>
+	<div id="footer">
+	<div class="left">
+	<a href="http://werc.cat-v.org/">Powered by werc</a>
+	</div>
+	<div class="right">
+	&copy; 2011 Anselm R Garbe
+	</div>
+	</div>
+
+	</div>
+</body>
+</html>
