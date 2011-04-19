@@ -1,3 +1,10 @@
+<!--
+	<div id="offsite">
+		<a class="current" href="http://garbe.us">Home</a>
+		<a href="http://blog.garbe.us">Blog</a>
+	</div>
+-->
+
 	<div id="innerbody">
 
 	<div id="header">
@@ -34,3 +41,5 @@
 	</div>
 
 	</div>
+</body>
+</html>

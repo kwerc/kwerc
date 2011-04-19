@@ -13,7 +13,7 @@ a {
 } 
 
 a:hover {
-	color: #039;
+	color: #666;
 }
 
 #innerbody {
@@ -30,7 +30,7 @@ a:hover {
 	padding: 0.7ex;
 }
 
-#header a, a:hover {
+#header a {
 	color: #666;
 }
 
