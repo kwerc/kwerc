@@ -1,5 +1,3 @@
-	<div id="innerbody">
-
 	<div id="header">
 		<a href="/">%($"siteTitle%) <span id="headerSubTitle">%($"siteSubTitle%)</span></a>
 	</div>
@@ -31,6 +29,4 @@
 	<div class="right">
 	&copy; 2011 Anselm R Garbe
 	</div>
-	</div>
-
 	</div>
