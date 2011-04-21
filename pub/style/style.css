@@ -90,9 +90,9 @@ h4 {
 #nav li a.current {
 	background-color: #fff;
 	color: #333;
-	-moz-box-shadow: 0.4ex 0.1ex 0.4ex #999;
-	-webkit-box-shadow: 0.4ex 0.1ex 0.4ex #999;
-	box-shadow: 0.4ex 0.1ex 0.4ex #999;
+	-moz-box-shadow: 0.4ex 0.2ex 0.4ex #999;
+	-webkit-box-shadow: 0.4ex 0.2ex 0.4ex #999;
+	box-shadow: 0.4ex 0.2ex 0.4ex #999;
 }
 
 #main {
