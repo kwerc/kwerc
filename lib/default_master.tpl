@@ -1,3 +1,10 @@
+	<div id="menu">
+		<a href="http://garbe.us">home</a> |
+		<a href="http://dl.garbe.us">download</a> |
+		<a href="http://suckless.org">suckless.org</a> |
+		<a href="http://hg.suckless.org">code</a> |
+		<a href="http://dl.suckless.org">software</a>
+	</div>
 	<div id="header">
 		<a href="/">%($"siteTitle%) <span id="headerSubTitle">%($"siteSubTitle%)</span></a>
 	</div>

@@ -16,12 +16,30 @@ a:hover {
 	color: #666;
 }
 
+#menu {
+	clear: both;
+	color: #fff;
+	background-color: #36c;
+	padding: 0.7ex;
+	font-size: 84%;
+}
+
+#menu a {
+	padding: 0.5ex 1ex 0.5ex 1ex;
+	color: #fff;
+}
+
+#menu a:hover {
+	color: #eee;
+}
+
 #header {
 	clear: both;
 	color: #666;
 	text-shadow: 1px 1px #fff;
 	font-size: 1.7em;
 	padding: 0.7ex;
+	border-top: 1px solid #ccc;
 }
 
 #header a {
@@ -62,7 +80,7 @@ h4 {
 	background-color: #fff;
 	float: left;
 	margin: 0 1px 0 0;
-	padding: 0;
+	padding: 1em 0;
 	border-right: 1px solid #ccc;
 	width: 200px;
 }
@@ -101,7 +119,7 @@ h4 {
 
 #main {
 	margin: 0 0 0 200px; 
-	padding: 1.5em 1em 1.5em 2em;
+	padding: 1.5em;
 	max-width: 50em;
 	border-left: 1px solid #ccc;
 }
