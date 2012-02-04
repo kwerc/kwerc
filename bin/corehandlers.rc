@@ -1,10 +1,12 @@
 # Werc builtin handlers
 
 fn nav_tree {
+    if(! ~ $#sideBarNavTitle 0)
+        echo '<p class="sideBarTitle">'$"sideBarNavTitle':</p>'
 
     echo '<ul>'
     if(~ $"req_paths_list /)
-        echo '<li><a href="/" class="current">Home</a></li>'
+        echo '<li><a href="/" class="thisPage">Home</a></li>'
     if not
         echo '<li><a href="/">Home</a></li>'
     # Ignore stderr, last path element might be a file that doesn't exist (eg., foo for foo.md)
@@ -15,15 +17,15 @@ fn nav_tree {
             if(! ~ $#synth_paths 0) echo $synth_paths | tr ' ' $NEW_LINE 
         } | sort -u | awk -F/ ' 
     function p(x, y, s) { for(i=0; i < x-y; i+=1) print s }
-    BEGIN { lNF=2; }
+    BEGIN { lNF=2; print "<ul>" }
     { 
         d = ""
         if(match($0, "/$"))
             d = "/"
         sub("/$", "") # Strip trailing / for dirs so NF is consistent 
 
-        print "<li>";
-        p(NF, lNF, "&nbsp;")
+        p(NF, lNF, "<li><ul>")
+        p(lNF, NF, "</ul></li>")
         lNF = NF
 
         bname = $NF d
@@ -35,13 +37,11 @@ fn nav_tree {
         gsub(/[^\/]$/, "&/", pa) 
 
         if(index(ENVIRON["req_path"] "/", pa) == 1)
-            print "<a href=\"" path "\" class=\"current\">" bname "</a>"
+            print "<li><a href=\"" path "\" class=\"thisPage\"> " bname "</a></li>"
         else 
-            print "<a href=\"" path "\">" bname "</a>"
-
-        print "</li>"
+            print "<li><a href=\"" path "\">" bname "</a></li>"
     }
-    END { print "</ul>" }'
+    END { p(lNF, 2, "</ul></li>"); print "</ul>" }'
 }
 
 fn link_bar {

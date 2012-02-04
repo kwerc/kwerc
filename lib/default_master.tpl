@@ -27,6 +27,6 @@
 	<a href="http://werc.cat-v.org/">Powered by werc</a>
 	</div>
 	<div class="right">
-	&copy; 2011 Anselm R Garbe
+	&copy; 2012 Anselm R Garbe
 	</div>
 	</div>
