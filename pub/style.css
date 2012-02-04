@@ -1,7 +1,7 @@
 body {
 	background-color: #eee;
 	color: #333;
-	font-family: Cantarell, Helvetica, Verdana, Arial, 'Liberation Sans', FreeSans, sans-serif;
+	font-family: 'Cantarell', Helvetica, Verdana, Arial, 'Liberation Sans', FreeSans, sans-serif;
 	text-align: justify;
 	padding: 0;
 	margin: 0;
@@ -19,7 +19,7 @@ a:hover {
 #menu {
 	clear: both;
 	color: #fff;
-	background-color: #36c;
+	background-color: #666;
 	padding: 0.7ex;
 	font-size: 84%;
 }
@@ -134,8 +134,12 @@ h4 {
 
 .left {
 	float: left;
+	margin: 0;
+	padding: 0;
 }
 
 .right {
 	float: right;
+	margin: 0;
+	padding: 0;
 }

@@ -17,7 +17,7 @@ fn nav_tree {
             if(! ~ $#synth_paths 0) echo $synth_paths | tr ' ' $NEW_LINE 
         } | sort -u | awk -F/ ' 
     function p(x, y, s) { for(i=0; i < x-y; i+=1) print s }
-    BEGIN { lNF=2; print "<ul>" }
+    BEGIN { lNF=2; }
     { 
         d = ""
         if(match($0, "/$"))
@@ -41,7 +41,12 @@ fn nav_tree {
         else 
             print "<li><a href=\"" path "\">" bname "</a></li>"
     }
-    END { p(lNF, 2, "</ul></li>"); print "</ul>" }'
+    END { p(lNF, 2, "</ul></li>"); }'
+    if(~ $"req_paths_list '/ /sitemap')
+        echo '<li><a href="/sitemap" class="thisPage">Site map</a></li>'
+    if not
+        echo '<li><a href="/sitemap">Site map</a></li>'
+    echo '</ul>'
 }
 
 fn link_bar {
