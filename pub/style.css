@@ -124,6 +124,11 @@ h4 {
 	border-left: 1px solid #ccc;
 }
 
+#ads {
+	float:right;
+	padding: 1em;
+}
+
 #footer {
 	clear: both;
 	color: #666;

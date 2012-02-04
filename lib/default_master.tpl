@@ -18,6 +18,9 @@
 	</div>
 % }
 
+	<div id="ads">
+AD 1
+	</div>
 	<div id="main">
 
 % run_handlers $handlers_body_head
@@ -27,6 +30,7 @@
 % run_handlers $handlers_body_foot
 
 	</div>
+
 	</div>
 
 	<div id="footer">
