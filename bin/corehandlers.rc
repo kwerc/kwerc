@@ -1,14 +1,13 @@
 # Werc builtin handlers
 
 fn nav_tree {
-    if(! ~ $#sideBarNavTitle 0)
-        echo '<p class="sideBarTitle">'$"sideBarNavTitle':</p>'
-
     echo '<ul>'
-    if(~ $"req_paths_list /)
-        echo '<li><a href="/" class="thisPage">Home</a></li>'
-    if not
-        echo '<li><a href="/">Home</a></li>'
+    if(! ~ $#sideBarNavTitle 0) {
+        if(~ $"req_paths_list /)
+            echo '<li><a href="/" class="thisPage">'$"sideBarNavTitle'</a></li>'
+        if not
+            echo '<li><a href="/">'$"sideBarNavTitle'</a></li>'
+    }
     # Ignore stderr, last path element might be a file that doesn't exist (eg., foo for foo.md)
     # /./ to deal with p9p's ls failure to follow dir symlinks otherwise
     ls -F $sitedir/./$req_paths_list >[2]/dev/null \
