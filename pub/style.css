@@ -38,7 +38,7 @@ a:hover {
 	color: #666;
 	text-shadow: 1px 1px #fff;
 	font-size: 1.7em;
-	padding: 0.7ex;
+	padding: 0.7ex 0.7ex 0.7ex 0.7em;
 	border-top: 1px solid #ccc;
 }
 
