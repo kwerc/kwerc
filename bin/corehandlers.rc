@@ -12,7 +12,7 @@ fn nav_tree {
     # /./ to deal with p9p's ls failure to follow dir symlinks otherwise
     ls -F $sitedir/./$req_paths_list >[2]/dev/null \
         | { 
-            sed $dirfilter'/\/[^_.\/][^\/]*(\.(md|txt|html)|\/)$/!d; s!^'$sitedir'!!; '$dirclean 
+            sed $dirfilter'/\/[^_.\/][^\/]*(\.(md|txt|html|1)|\/)$/!d; s!^'$sitedir'!!; '$dirclean 
             if(! ~ $#synth_paths 0) echo $synth_paths | tr ' ' $NEW_LINE 
         } | sort -u | awk -F/ ' 
     function p(x, y, s) { for(i=0; i < x-y; i+=1) print s }
@@ -41,10 +41,6 @@ fn nav_tree {
             print "<li><a href=\"" path "\">" bname "</a></li>"
     }
     END { p(lNF, 2, "</ul></li>"); }'
-    if(~ $"req_paths_list '/ /sitemap')
-        echo '<li><a href="/sitemap" class="thisPage">Site map</a></li>'
-    if not
-        echo '<li><a href="/sitemap">Site map</a></li>'
     echo '</ul>'
 }
 
@@ -72,6 +68,12 @@ fn html_handler {
         body==2 {print}
         body==0 {buf=buf "\n" $0}
         END {if(body<=0) {print buf}}' < $1
+}
+
+fn man_handler {
+    echo '<pre>'
+    $man_formatter $1
+    echo '</pre>'
 }
 
 fn txt_handler {
@@ -103,6 +105,10 @@ fn setup_handlers {
         local_file=$local_path.md
         handler_body_main=(md_handler $local_file)
     }
+    if not if(test -f $local_path.1) {
+        local_file=$local_path.1
+        handler_body_main=(man_handler $local_file)
+    }
     if not if(test -f $local_path.tpl) {
         local_file=$local_path.tpl
         handler_body_main=(tpl_handler $local_file)
@@ -119,28 +125,11 @@ fn setup_handlers {
         local_file=$local_path.txt
         handler_body_main=(txt_handler $local_file)
     }
-
-    # XXX Should check that $enabled_apps exist in $werc_apps?
-    # XXX Should split init of apps that provide main handler (eg., blog) and apps that don't (eg., comments)?
-    if(! ~ $#enabled_apps 0)
-        for(a in $enabled_apps)
-            $a^'_init'
-
     if(! ~ $#handler_body_main 0)
         { } # We are done
     # Dir listing
-    if not if(~ $local_path */index) {
+    if not if(~ $local_path */index)
         handler_body_main=(dir_listing_handler $req_path)
-        if(test -f $sitedir$req_path'_header.md') {
-            t=`{get_file_title $sitedir$req_path'_header.md'}
-            if(! ~ $"t '')
-                pageTitle=$t
-
-            ll_add handlers_body_head md_handler $sitedir$req_path'_header.md' 
-        }
-        if(test -f $sitedir$req_path'_footer.md')
-            ll_add handlers_body_foot md_handler $sitedir$req_path'_footer.md'            
-    }
     # Canonize explicit .html urls, the web server might handle this first!
     if not if(~ $local_path *.html && test -f $local_path)
         perm_redirect `{ echo $req_path|sed 's/.html$//' }

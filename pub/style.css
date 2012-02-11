@@ -1,14 +1,13 @@
 body {
 	background-color: #eee;
 	color: #333;
-	font-family: 'Cantarell', Helvetica, Verdana, Arial, 'Liberation Sans', FreeSans, sans-serif;
-	text-align: justify;
+	font-family: Helvetica, Verdana, Arial, 'Liberation Sans', FreeSans, sans-serif;
 	padding: 0;
 	margin: 0;
 }
 
 a {
-	color: #36c;
+	color: #057;
 	text-decoration: none;
 } 
 
@@ -19,7 +18,7 @@ a:hover {
 #menu {
 	clear: both;
 	color: #ccc;
-	background-color: #666;
+	background-color: #057;
 	padding: 0.7ex;
 	font-size: 84%;
 }
@@ -30,7 +29,7 @@ a:hover {
 }
 
 #menu a:hover {
-	color: #eee;
+	color: #ccc;
 }
 
 #header {
@@ -38,7 +37,7 @@ a:hover {
 	color: #666;
 	text-shadow: 1px 1px #fff;
 	font-size: 1.7em;
-	padding: 0.7ex;
+	padding: 0.7ex 0.7ex 0.7ex 0.7em;
 	border-top: 1px solid #ccc;
 }
 
@@ -66,6 +65,12 @@ h4 {
 	font-size: 1.1em;
 }
 
+#headerSubTitle {
+	font-size: 0.8em;
+	font-style: italic;
+	margin-left: 1em;
+}
+
 #content {
 	clear: both;
 	margin: 0;
@@ -81,7 +86,7 @@ h4 {
 	float: left;
 	margin: 0 1px 0 0;
 	padding: 1em 0;
-	border-right: 1px solid #ccc;
+	border-right: 1px dotted #ccc;
 	width: 200px;
 }
 
@@ -101,7 +106,7 @@ h4 {
 }
 
 #nav li a {
-	color: #36c;
+	color: #057;
 	display: block;
 	margin: 0;
 	padding: 0.8ex 2em 0.8ex 1em;
@@ -118,10 +123,10 @@ h4 {
 }
 
 #main {
+	text-align: justify;
 	margin: 0 0 0 200px; 
 	padding: 1.5em;
 	max-width: 50em;
-	border-left: 1px solid #ccc;
 }
 
 #ads {

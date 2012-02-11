@@ -1,12 +1,23 @@
 	<div id="menu">
-		<a href="http://garbe.us">home</a> |
-		<a href="http://dl.garbe.us">download</a> |
-		<a href="http://suckless.org">suckless.org</a> |
+		<a href="http://suckless.org">home</a> |
 		<a href="http://hg.suckless.org">code</a> |
-		<a href="http://dl.suckless.org">software</a>
+		<a href="http://dl.suckless.org">download</a> |
+		<a href="http://man.suckless.org">man</a> |
+		<a href="http://dwm.suckless.org">dwm</a> |
+		<a href="http://libs.suckless.org">libs</a> |
+		<a href="http://st.suckless.org">st</a> |
+		<a href="http://sta.li">stali</a> |
+		<a href="http://surf.suckless.org">surf</a> |
+		<a href="http://tools.suckless.org">tools</a> |
+		<a href="http://wmi.suckless.org">wmi</a>
 	</div>
 	<div id="header">
-		<a href="/">%($"siteTitle%) <span id="headerSubTitle">%($"siteSubTitle%)</span></a>
+% if(! ~ $#siteImage 0) {
+	<a href="/"><img src="%($"siteImage%)" alt="%($"siteTitle%)"/> <span id="headerSubTitle">%($"siteSubTitle%)</span></a>
+% }
+% if not {
+	<a href="/">%($"siteTitle%) <span id="headerSubTitle">%($"siteSubTitle%)</span></a>
+% }
 	</div>
 
 	<div id="content">
@@ -19,17 +30,6 @@
 % }
 
 	<div id="ads">
-	<script type="text/javascript"><!--
-	google_ad_client = "ca-pub-9029609350780515";
-	/* garbeus */
-	google_ad_slot = "4837453445";
-	google_ad_width = 160;
-	google_ad_height = 600;
-	//-->
-	</script>
-	<script type="text/javascript"
-	src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
-	</script>
 	</div>
 	<div id="main">
 
@@ -48,6 +48,6 @@
 	<a href="http://werc.cat-v.org/">Powered by werc</a>
 	</div>
 	<div class="right">
-	&copy; 2012 Anselm R Garbe
+	&copy; 2006-2012 suckless.org community
 	</div>
 	</div>

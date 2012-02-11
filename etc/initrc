@@ -27,14 +27,10 @@ path=($plan9port/bin . ./bin ./bin/contrib /bin /usr/bin)
 # formatter, but all major functionality should should be formatter agnostic.
 #formatter=(md2html.awk)
 formatter=(fltr_cache markdown.pl)
+man_formatter=(troff -N -man)
 
 # Enable debugging, to disable set to ()
 debug=true
 
 # Globally enabled apps
 enabled_apps=( )
-
-# Default site variables, must be set in initrc.local or _werc/config, only siteTitle is required.
-#masterSite=cat-v.org # Not required!
-#siteTitle='cat-v'
-#siteSubTitle='Considered harmful'
