@@ -15,8 +15,6 @@ dirclean=' s/\.(md|1)$//; '
 # Careful, the proper p9p path might not be set until initrc.local is sourced
 path=(. $PLAN9/bin ./bin /bin /usr/bin) 
 
-headers=tpl/headers.tpl
-res_tail='</body></html>'
 http_content_type='text/html'
 ll_add handlers_bar_left nav_tree
 werc_root=`{pwd}
@@ -119,8 +117,7 @@ fn werc_exec_request {
     if(~ $REQUEST_METHOD HEAD)
         exit
     
-    template $headers $master_template | awk_buffer
-    echo $res_tail
+    template $master_template | awk_buffer
 }
 
 werc_exec_request # >[2]/tmp/wercdebug.log
