@@ -1,4 +1,0 @@
-sitesdir='/var/www/sites'
-formatter=(fltr_cache markdown)
-man_formatter=(troff -N -man)
-debug=()

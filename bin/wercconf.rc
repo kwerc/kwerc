@@ -5,15 +5,3 @@ fn conf_perm_redirect {
     if not
         ll_addh perm_redir_patterns $1 $2
 }
-
-fn conf_hide_paths {
-    for(i in $*)
-       dirfilter=$dirfilter^'/'^`{echo $sitedir$conf_wd$i|sed 's!/+!\\/!g'}^'/d; '
-}
-
-# Usually will be called from within conf_enable_foo 
-fn conf_enable_app {
-    # Note: maybe we should add test -d apps/$1/?
-    if(! ~ $1 $enabled_apps)
-	enabled_apps=( $enabled_apps $1 )
-}

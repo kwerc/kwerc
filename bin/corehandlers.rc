@@ -12,7 +12,7 @@ fn nav_tree {
     # /./ to deal with p9p's ls failure to follow dir symlinks otherwise
     ls -F $sitedir/./$req_paths_list >[2]/dev/null \
         | { 
-            sed $dirfilter'/\/[^_.\/][^\/]*(\.(md|txt|html|1)|\/)$/!d; s!^'$sitedir'!!; '$dirclean 
+            sed $dirfilter'/\/[^_.\/][^\/]*(\.(md|1)|\/)$/!d; s!^'$sitedir'!!; '$dirclean 
             if(! ~ $#synth_paths 0) echo $synth_paths | tr ' ' $NEW_LINE 
         } | sort -u | awk -F/ ' 
     function p(x, y, s) { for(i=0; i < x-y; i+=1) print s }
@@ -44,42 +44,13 @@ fn nav_tree {
     echo '</ul>'
 }
 
-fn link_bar {
-    if(~ $1 -t) {
-        echo '<p class="sideBarTitle">'$2'</p>'
-        shift; shift
-    }
-    echo '<ul>'
-    while(! ~ $#* 0) {
-        echo '<li><a href="'$2'">- '$1'</a></li>'
-        shift; shift
-    }
-    echo '</ul>'
-}
-
 fn md_handler { $formatter $1 }
 
 fn tpl_handler { template $* }
 
-fn html_handler {
-    # body states: 0 = no <body> found, 2 = after <body>, 1 = after <body></body>, -1 = after </body>
-    awk 'gsub(".*<[Bb][Oo][Dd][Yy][^>]*>", "") > 0 {body=2}
-        gsub("</ *[Bb][Oo][Dd][Yy][^>]*>.*", "") > 0 {print; body=body-1}
-        body==2 {print}
-        body==0 {buf=buf "\n" $0}
-        END {if(body<=0) {print buf}}' < $1
-}
-
 fn man_handler {
     echo '<pre>'
     $man_formatter $1
-    echo '</pre>'
-}
-
-fn txt_handler {
-    # Note: Words are not broken, even if they are way beyond 82 chars long
-    echo '<pre>'
-    sed 's/</\&lt;/g; s/>/\&gt;/g' < $1 | fmt -l 82 -j
     echo '</pre>'
 }
 
@@ -93,14 +64,7 @@ fn dir_listing_handler {
     echo '</ul>'
 }
 
-fn notices_handler {
-    for(type in notify_errors notify_notes notify_success)
-        for(n in $$type)
-            echo '<div class="'$type'"><b>'$"n'</b></div>'
-}
-
 fn setup_handlers {
-
     if(test -f $local_path.md) {
         local_file=$local_path.md
         handler_body_main=(md_handler $local_file)
@@ -113,26 +77,13 @@ fn setup_handlers {
         local_file=$local_path.tpl
         handler_body_main=(tpl_handler $local_file)
     }
-    if not if(test -f $local_path.html) {
-        local_file=$local_path.html
-        handler_body_main=(html_handler $local_file)
-    }
-    # Global tpl (eg sitemap.tpl), should take precedence over txt handler!
     if not if(test -f tpl^$req_path^.tpl)
-        # XXX Should we set $local_file for global .tpls?
         handler_body_main=(tpl_handler tpl^$req_path^.tpl)
-    if not if(test -f $local_path.txt) {
-        local_file=$local_path.txt
-        handler_body_main=(txt_handler $local_file)
-    }
     if(! ~ $#handler_body_main 0)
         { } # We are done
     # Dir listing
     if not if(~ $local_path */index)
         handler_body_main=(dir_listing_handler $req_path)
-    # Canonize explicit .html urls, the web server might handle this first!
-    if not if(~ $local_path *.html && test -f $local_path)
-        perm_redirect `{ echo $req_path|sed 's/.html$//' }
     # Fallback static file handler
     if not if(test -f $local_path)
         static_file $local_path
@@ -152,5 +103,4 @@ fn setup_404_handler {
 
 fn run_handlers { for(h in $*) run_handler $$h }
 fn run_handler { $*(1) $*(2-) }
-
 
