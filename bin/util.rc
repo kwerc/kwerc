@@ -1,0 +1,117 @@
+##############################################################################
+# Useful CGI stuff
+
+fn dprint { echo $* >[1=2] }
+
+fn http_redirect {
+    if(~ $1 http://* https://*)
+        t=$1
+    if not if(~ $1 /*)
+        t=$"base_url^$1
+    if not
+        t=$"base_url^$"req_path^$1
+    echo 'Status: '^$2^'
+Location: '^$t^'
+
+'
+    exit
+}
+fn perm_redirect { http_redirect $1 '301 Moved Permanantly' }
+
+# This seems slightly improve performance, but might depend on httpd buffering behavior.
+fn awk_buffer {
+    awk '{
+        buf = buf $0"\n"
+        if(length(buf) > 1400) {
+            printf "%s", buf
+            buf = ""
+        }
+    }
+    END { printf "%s", buf }'
+}
+
+##############################################################################
+# Cookies
+fn get_cookie {
+    ifs=';' { co=`{echo $HTTP_COOKIE} }
+
+    # XXX: we might be adding a trailing new line?
+    # The ' ?' is needed to deal with '; ' inter-cookie delimiter
+    { for(c in $co) echo $c } | sed -n 's/^ ?'$1'=//p' 
+}
+
+
+fn static_file {
+    echo 'Content-Type: '`{select_mime $1}
+    echo
+    cat $1
+    exit
+}
+
+fn select_mime {
+    m='text/plain'
+    if(~ $1 *.css)
+        m='text/css'
+    if not if(~ $1 *.ico)
+        m='image/x-icon'
+    if not if(~ $1 *.png)
+        m='image/png'
+    if not if(~ $1 *.jpg *.jpeg)
+        m='image/jpeg'
+    if not if(~ $1 *.gif)
+        m='image/gif'
+    if not if(~ $1 *.pdf)
+        m='application/pdf'
+    echo $m
+}
+
+##############################################################################
+# Generic rc programming helpers
+
+# Manage nested lists
+fn ll_add {
+    _l=$1^_^$#$1
+    $_l=$*(2-)
+    $1=( $$1 $_l )
+}
+# Add to the head: dangerous if you shrink list by hand!
+fn ll_addh {
+    _l=$1^_^$#$1
+    $_l=$*(2-)
+    $1=( $_l $$1 )
+}
+
+
+NEW_LINE='
+'
+
+##############################################################################
+# To be used from config files
+fn conf_perm_redirect {
+    if(~ $#* 1)
+        perm_redir_to=$1
+    if not
+        ll_addh perm_redir_patterns $1 $2
+}
+fn get_tpl_file {
+    if(test -f tpl/$1)
+        echo -n tpl/$1
+    if not
+        status='Can''t find tpl file: '$1
+}
+
+fn template { awk -f bin/template.awk $* | rc $rcargs }
+
+# File title extraction
+fn get_md_title {
+    sed -n -e '1N; /^.*\n===*$/N; /.*\n===*\n *$/!b' -e 's/\n==*\n//p' < $1
+}
+
+fn get_file_title {
+    if (~ $1 *.md)
+        get_md_title $1
+    if not if(~ $1 */) {
+        if(test -f $1/index.md)
+            get_md_title $1/index.md
+    }
+}

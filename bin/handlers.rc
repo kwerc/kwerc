@@ -1,0 +1,106 @@
+# Werc builtin handlers
+
+fn nav_tree {
+    echo '<ul>'
+    if(! ~ $#sideBarNavTitle 0) {
+        if(~ $"req_paths_list /)
+            echo '<li><a href="/" class="thisPage">'$"sideBarNavTitle'</a></li>'
+        if not
+            echo '<li><a href="/">'$"sideBarNavTitle'</a></li>'
+    }
+    # Ignore stderr, last path element might be a file that doesn't exist (eg., foo for foo.md)
+    # /./ to deal with p9p's ls failure to follow dir symlinks otherwise
+    ls -F $sitedir/./$req_paths_list >[2]/dev/null \
+        | { 
+            sed $dirfilter'/\/[^_.\/][^\/]*(\.(md|1)|\/)$/!d; s!^'$sitedir'!!; '$dirclean 
+            if(! ~ $#synth_paths 0) echo $synth_paths | tr ' ' $NEW_LINE 
+        } | sort -u | awk -F/ ' 
+    function p(x, y, s) { for(i=0; i < x-y; i+=1) print s }
+    BEGIN { lNF=2; }
+    { 
+        d = ""
+        if(match($0, "/$"))
+            d = "/"
+        sub("/$", "") # Strip trailing / for dirs so NF is consistent 
+
+        p(NF, lNF, "<li><ul>")
+        p(lNF, NF, "</ul></li>")
+        lNF = NF
+
+        bname = $NF d
+        path = $0 d
+        gsub(/[\-_]/, " ", bname)
+
+        # To avoid false matches add trailing / even for plain files to act as delimiter
+        pa = path
+        gsub(/[^\/]$/, "&/", pa) 
+
+        if(index(ENVIRON["req_path"] "/", pa) == 1)
+            print "<li><a href=\"" path "\" class=\"thisPage\"> " bname "</a></li>"
+        else 
+            print "<li><a href=\"" path "\">" bname "</a></li>"
+    }
+    END { p(lNF, 2, "</ul></li>"); }'
+    echo '</ul>'
+}
+
+fn md_handler { $formatter $1 }
+
+fn tpl_handler { template $* }
+
+fn man_handler {
+    echo '<pre>'
+    $man_formatter $1
+    echo '</pre>'
+}
+
+fn dir_listing_handler {
+    d=`{basename -d $1}
+    if(~ $#d 0)
+        d='/'
+    echo $d|sed 's,.*//,,g; s,/$,,; s,/, / ,g; s/[\-_]/ /g; s,.*,<h1 class="dir-list-head">&</h1> <ul class="dir-list">,'
+    # Symlinks suck: '/.' forces ls to list the linked dir if $d is a symlink.
+    ls -F $dir_listing_ls_opts $sitedir$d/. | sed $dirfilter$dirclean | awk '{match($0, "/[^/]*/?$"); l=substr($0, RSTART+1, RLENGTH-1);n=l; gsub(/[\-_]/, " ", n); print "<li><a href=\""l"\">"n"</a></li>"; }' | uniq
+    echo '</ul>'
+}
+
+fn setup_handlers {
+    if(test -f $local_path.md) {
+        local_file=$local_path.md
+        handler_body_main=(md_handler $local_file)
+    }
+    if not if(test -f $local_path.1) {
+        local_file=$local_path.1
+        handler_body_main=(man_handler $local_file)
+    }
+    if not if(test -f $local_path.tpl) {
+        local_file=$local_path.tpl
+        handler_body_main=(tpl_handler $local_file)
+    }
+    if not if(test -f tpl^$req_path^.tpl)
+        handler_body_main=(tpl_handler tpl^$req_path^.tpl)
+    if(! ~ $#handler_body_main 0)
+        { } # We are done
+    # Dir listing
+    if not if(~ $local_path */index)
+        handler_body_main=(dir_listing_handler $req_path)
+    # Fallback static file handler
+    if not if(test -f $local_path)
+        static_file $local_path
+    if not if(~ $req_path /pub/* && test -f .$req_path)
+        static_file .$req_path
+    # File not found
+    if not
+        setup_404_handler
+}
+
+# This function allows config files to define their own 404 handlers.
+fn setup_404_handler {
+    handler_body_main=(tpl_handler `{get_tpl_file 404.tpl})
+    echo 'Status: 404 Not Found'
+    dprint 'NOT FOUND: '$SERVER_NAME^$"REQUEST_URI^' - '^$"HTTP_REFERER^' - '^$"HTTP_USER_AGENT
+}
+
+fn run_handlers { for(h in $*) run_handler $$h }
+fn run_handler { $*(1) $*(2-) }
+

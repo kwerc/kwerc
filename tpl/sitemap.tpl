@@ -55,9 +55,6 @@ if(test -s $tmpfilex) {
         cat $tmpfilex
         rm $tmpfilex &
         echo '</urlset>'
-        # TODO Enable automaic search engine update notification.
-        #hget 'http://google.com/ping?sitemap='^`{url_encode $base_url'/sitemap.gz'} > /dev/null
-    
     } | gzip > $sitedir/sitemap.gz &
     #} > $sitedir/sitemap.xml &
 }
