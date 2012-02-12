@@ -10,6 +10,7 @@ Requirements:
 
 * An http server that can handle CGIs
 * Plan 9 from User Space: http://plan9.us - Or http://tools.suckless.org/9base
+* discount markdown: http://www.pell.portland.or.us/~orc/Code/discount/
 
 Note: swerc by default expects the Plan 9 tools to be installed under
 /usr/local/plan9/bin/, if you have installed them elsewhere you will need to
