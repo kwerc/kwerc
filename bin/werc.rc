@@ -17,7 +17,7 @@ dirclean=' s/\.(md|html|txt|1)$//; '
 # Careful, the proper p9p path might not be set until initrc.local is sourced
 path=(. $PLAN9/bin ./bin /bin /usr/bin) 
 
-headers=lib/headers.tpl
+headers=tpl/headers.tpl
 res_tail='</body></html>'
 http_content_type='text/html'
 ll_add handlers_bar_left nav_tree
@@ -33,7 +33,7 @@ fn werc_exec_request {
     site=$SERVER_NAME
     base_url=http://$site
     sitedir=$sitesdir/$site
-    master_template=`{get_lib_file default_master.tpl}
+    master_template=`{get_tpl_file default_master.tpl}
     current_date_time=`{date}
 
     # Note: $REQUEST_URI is not officially in CGI 1.1, but seems to be de-facto
