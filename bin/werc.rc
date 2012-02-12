@@ -1,8 +1,6 @@
 #!/usr/local/plan9/bin/rc
-. ./cgilib.rc
-. ./werclib.rc
-. ./wercconf.rc
-. ./corehandlers.rc
+. ./util.rc
+. ./handlers.rc
 . ./fltr_cache.rc
 cd ..
 

@@ -1,7 +1,0 @@
-# To be used from config files
-fn conf_perm_redirect {
-    if(~ $#* 1)
-        perm_redir_to=$1
-    if not
-        ll_addh perm_redir_patterns $1 $2
-}
