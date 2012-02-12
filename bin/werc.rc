@@ -31,7 +31,7 @@ fn werc_exec_request {
     site=$SERVER_NAME
     base_url=http://$site
     sitedir=$sitesdir/$site
-    master_template=`{get_tpl_file default_master.tpl}
+    master_template=`{get_tpl_file master.tpl}
     current_date_time=`{date}
 
     # Note: $REQUEST_URI is not officially in CGI 1.1, but seems to be de-facto
