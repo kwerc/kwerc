@@ -20,10 +20,10 @@ ll_add handlers_bar_left nav_tree
 werc_root=`{pwd}
 sitesdir=sites
 
- . ./etc/initrc
-
 if(test -f etc/initrc.local)
     . ./etc/initrc.local
+if not
+    . ./etc/initrc
 
 fn werc_exec_request {
     site=$SERVER_NAME

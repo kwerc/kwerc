@@ -30,17 +30,6 @@ fn awk_buffer {
     END { printf "%s", buf }'
 }
 
-##############################################################################
-# Cookies
-fn get_cookie {
-    ifs=';' { co=`{echo $HTTP_COOKIE} }
-
-    # XXX: we might be adding a trailing new line?
-    # The ' ?' is needed to deal with '; ' inter-cookie delimiter
-    { for(c in $co) echo $c } | sed -n 's/^ ?'$1'=//p' 
-}
-
-
 fn static_file {
     echo 'Content-Type: '`{select_mime $1}
     echo
@@ -93,8 +82,11 @@ fn conf_perm_redirect {
     if not
         ll_addh perm_redir_patterns $1 $2
 }
+
 fn get_tpl_file {
-    if(test -f tpl/$1)
+    if(test -f tpl/$1.local)
+        echo -n tpl/$1.local
+    if not if(test -f tpl/$1)
         echo -n tpl/$1
     if not
         status='Can''t find tpl file: '$1
