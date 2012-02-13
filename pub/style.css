@@ -7,18 +7,18 @@ body {
 }
 
 a {
-	color: #057;
+	color: #058;
 	text-decoration: none;
 } 
 
 a:hover {
-	color: #666;
+	background-color: #eee;
 }
 
 #menu {
 	clear: both;
 	color: #ccc;
-	background-color: #057;
+	background-color: #058;
 	padding: 0.7ex;
 	font-size: 84%;
 }
@@ -29,7 +29,7 @@ a:hover {
 }
 
 #menu a:hover {
-	color: #ccc;
+	background-color: #069;
 }
 
 #header {
@@ -106,14 +106,9 @@ h4 {
 }
 
 #nav li a {
-	color: #057;
 	display: block;
 	margin: 0;
 	padding: 0.8ex 2em 0.8ex 1em;
-}
-
-#nav li a:hover {
-	background: #eee;
 }
 
 #nav li a.thisPage {
