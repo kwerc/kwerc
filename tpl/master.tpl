@@ -53,7 +53,7 @@
 
 	<div id="footer">
 	<div class="left">
-	<a href="http://werc.cat-v.org/">Powered by werc</a>
+	<a href="http://hg.suckless.org/swerc">swerc powered</a>
 	</div>
 	<div class="right">
 	&copy; 2006-2012 suckless.org community
