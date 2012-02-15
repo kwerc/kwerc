@@ -37,8 +37,6 @@
 	</div>
 % }
 
-	<div id="ads">
-	</div>
 	<div id="main">
 
 % run_handlers $handlers_body_head
