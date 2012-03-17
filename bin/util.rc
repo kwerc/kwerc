@@ -84,7 +84,9 @@ fn conf_perm_redirect {
 }
 
 fn get_tpl_file {
-    if(test -f tpl/$1.local)
+    if(test -f $sitedir/_werc/tpl/$1)
+        echo -n $sitedir/_werc/tpl/$1
+    if not if(test -f tpl/$1.local)
         echo -n tpl/$1.local
     if not if(test -f tpl/$1)
         echo -n tpl/$1
