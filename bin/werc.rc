@@ -120,4 +120,4 @@ fn werc_exec_request {
     template $master_template | awk_buffer
 }
 
-werc_exec_request # >[2]/tmp/wercdebug.log
+werc_exec_request  >[2]/tmp/wercdebug.log

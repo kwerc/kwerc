@@ -6,26 +6,22 @@
 	<meta charset="utf-8"> 
 </head> 
 <body>
+	<div id="header">
+		<a href="http://suckless.org/">suckless.org</a> <span id="headerSubTitle">%($"siteTitle%)</span>
+	</div>
+
 	<div id="menu">
 		<a href="http://suckless.org">home</a> |
-		<a href="http://hg.suckless.org">code</a> |
-		<a href="http://dl.suckless.org">download</a> |
-		<a href="http://man.suckless.org">man</a> |
 		<a href="http://dwm.suckless.org">dwm</a> |
-		<a href="http://libs.suckless.org">libs</a> |
 		<a href="http://st.suckless.org">st</a> |
 		<a href="http://sta.li">stali</a> |
 		<a href="http://surf.suckless.org">surf</a> |
 		<a href="http://tools.suckless.org">tools</a> |
-		<a href="http://wmi.suckless.org">wmi</a>
-	</div>
-	<div id="header">
-% if(! ~ $#siteImage 0) {
-	<a href="/"><img src="%($"siteImage%)" alt="%($"siteTitle%)"/> <span id="headerSubTitle">%($"siteSubTitle%)</span></a>
-% }
-% if not {
-	<a href="/">%($"siteTitle%) <span id="headerSubTitle">%($"siteSubTitle%)</span></a>
-% }
+		<a href="http://man.suckless.org">man</a>
+		<div class="right">
+			<a href="http://dl.suckless.org">download</a> |
+			<a href="http://hg.suckless.org">code</a>
+		</div>
 	</div>
 
 	<div id="content">

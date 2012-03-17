@@ -18,18 +18,18 @@ a:hover {
 #menu {
 	clear: both;
 	color: #ccc;
-	background-color: #058;
+	background-color: #ddd;
 	padding: 0.7ex;
-	font-size: 84%;
+	font-size: 94%;
 }
 
 #menu a {
 	padding: 0.5ex 1ex 0.5ex 1ex;
-	color: #fff;
+	color: #069;
 }
 
 #menu a:hover {
-	background-color: #069;
+	background-color: #eee;
 }
 
 #header {
@@ -38,7 +38,7 @@ a:hover {
 	text-shadow: 1px 1px #fff;
 	font-size: 1.7em;
 	padding: 0.7ex 0.7ex 0.7ex 0.7em;
-	border-top: 1px solid #ccc;
+	border-bottom: 1px solid #ccc;
 }
 
 #header a {

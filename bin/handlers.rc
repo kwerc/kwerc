@@ -2,11 +2,11 @@
 
 fn nav_tree {
     echo '<ul>'
-    if(! ~ $#sideBarNavTitle 0) {
+    if(! ~ $#menuTitle 0) {
         if(~ $"req_paths_list /)
-            echo '<li><a href="/" class="thisPage">'$"sideBarNavTitle'</a></li>'
+            echo '<li><a href="/" class="thisPage">'$"menuTitle'</a></li>'
         if not
-            echo '<li><a href="/">'$"sideBarNavTitle'</a></li>'
+            echo '<li><a href="/">'$"menuTitle'</a></li>'
     }
     # Ignore stderr, last path element might be a file that doesn't exist (eg., foo for foo.md)
     # /./ to deal with p9p's ls failure to follow dir symlinks otherwise
