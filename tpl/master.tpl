@@ -12,40 +12,40 @@
 
 	<div id="menu">
 % if(~ $site 'suckless.org') {
-		<a class="thisSite" href="http://suckless.org">home</a> |
+		<a class="thisSite" href="http://suckless.org">home</a>
 % }
 % if not {
-		<a href="http://suckless.org">home</a> |
+		<a href="http://suckless.org">home</a>
 % }
 % if(~ $site 'dwm.suckless.org') {
-		<a class="thisSite" href="http://dwm.suckless.org">dwm</a> |
+		<a class="thisSite" href="http://dwm.suckless.org">dwm</a>
 % }
 % if not {
-		<a href="http://dwm.suckless.org">dwm</a> |
+		<a href="http://dwm.suckless.org">dwm</a>
 % }
 % if(~ $site 'st.suckless.org') {
-		<a class="thisSite" href="http://st.suckless.org">st</a> |
+		<a class="thisSite" href="http://st.suckless.org">st</a>
 % }
 % if not {
-		<a href="http://st.suckless.org">st</a> |
+		<a href="http://st.suckless.org">st</a>
 % }
 % if(~ $site 'sta.li') {
-		<a class="thisSite" href="http://sta.li">stali</a> |
+		<a class="thisSite" href="http://sta.li">stali</a>
 % }
 % if not {
-		<a href="http://sta.li">stali</a> |
+		<a href="http://sta.li">stali</a>
 % }
 % if(~ $site 'surf.suckless.org') {
-		<a class="thisSite" href="http://surf.suckless.org">surf</a> |
+		<a class="thisSite" href="http://surf.suckless.org">surf</a>
 % }
 % if not {
-		<a href="http://surf.suckless.org">surf</a> |
+		<a href="http://surf.suckless.org">surf</a>
 % }
 % if(~ $site 'tools.suckless.org') {
-		<a class="thisSite" href="http://tools.suckless.org">tools</a> |
+		<a class="thisSite" href="http://tools.suckless.org">tools</a>
 % }
 % if not {
-		<a href="http://tools.suckless.org">tools</a> |
+		<a href="http://tools.suckless.org">tools</a>
 % }
 % if(~ $site 'man.suckless.org') {
 		<a class="thisSite" href="http://man.suckless.org">man</a>
@@ -54,7 +54,7 @@
 		<a href="http://man.suckless.org">man</a>
 % }
 		<div class="right">
-			<a href="http://dl.suckless.org">download</a> |
+			<a href="http://dl.suckless.org">download</a>
 			<a href="http://hg.suckless.org">source</a>
 		</div>
 	</div>
