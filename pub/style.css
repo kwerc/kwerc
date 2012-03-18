@@ -1,6 +1,6 @@
 body {
 	background-color: #eee;
-	color: #333;
+	color: #111;
 	font-family: Helvetica, Verdana, Arial, 'Liberation Sans', FreeSans, sans-serif;
 	padding: 0;
 	margin: 0;
@@ -17,19 +17,23 @@ a:hover {
 
 #menu {
 	clear: both;
-	color: #ccc;
-	background-color: #ddd;
+	color: #069;
+	background-color: #17a;
 	padding: 0.7ex;
 	font-size: 94%;
 }
 
 #menu a {
 	padding: 0.5ex 1ex 0.5ex 1ex;
-	color: #069;
+	color: #fff;
 }
 
 #menu a:hover {
-	background-color: #eee;
+	background-color: #069;
+}
+
+#menu a.thisSite {
+	font-weight: bold;
 }
 
 #header {
@@ -66,7 +70,7 @@ h4 {
 }
 
 #headerSubTitle {
-	font-size: 0.8em;
+	font-size: 0.75em;
 	font-style: italic;
 	margin-left: 1em;
 }
