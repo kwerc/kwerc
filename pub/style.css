@@ -34,6 +34,7 @@ a:hover {
 
 #menu a.thisSite {
 	font-weight: bold;
+	font-style: italic;
 }
 
 #header {
@@ -69,7 +70,7 @@ h4 {
 	font-size: 1.1em;
 }
 
-#headerSubTitle {
+#headerSubtitle {
 	font-size: 0.75em;
 	font-style: italic;
 	margin-left: 1em;

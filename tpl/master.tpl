@@ -7,7 +7,7 @@
 </head> 
 <body>
 	<div id="header">
-		<a href="http://suckless.org/">suckless.org</a> <span id="headerSubTitle">%($"siteTitle%)</span>
+		<a href="/">%($"siteTitle%)</a> <span id="headerSubtitle">%($"siteSubtitle%)</span>
 	</div>
 
 	<div id="menu">
