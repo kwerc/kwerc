@@ -56,6 +56,7 @@
 		<div class="right">
 			<a href="http://dl.suckless.org">download</a>
 			<a href="http://hg.suckless.org">source</a>
+			<a href="http://eyjafjallajoekull.com">art</a>
 		</div>
 	</div>
 
@@ -81,9 +82,6 @@
 	</div>
 
 	<div id="footer">
-	<div class="left">
-	<a href="http://hg.suckless.org/swerc">swerc powered</a>
-	</div>
 	<div class="right">
 	&copy; 2006-2012 suckless.org community
 	</div>
