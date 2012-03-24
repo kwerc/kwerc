@@ -2,7 +2,6 @@
 <html>
 <head> 
 	<title>%($pageTitle%)</title>
-	<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
 	<link rel="stylesheet" type="text/css" href="/pub/style.css">
 	<meta charset="utf-8"> 
 </head> 
