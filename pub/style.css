@@ -21,6 +21,8 @@ a:hover {
 	background-color: #17a;
 	padding: 0.7ex;
 	font-size: 94%;
+	border-top: 1px solid #ccc;
+	border-bottom: 1px solid #069;
 }
 
 #menu a {
@@ -43,7 +45,6 @@ a:hover {
 	text-shadow: 1px 1px #fff;
 	font-size: 1.7em;
 	padding: 0.7ex 0.7ex 0.7ex 0.7em;
-	border-bottom: 1px solid #ccc;
 }
 
 #header a {
@@ -82,8 +83,6 @@ h4 {
 	padding: 0;
 	background-color: #fff;
 	overflow: hidden;
-	border-top: 1px solid #ccc;
-	border-bottom: 1px solid #ccc;
 }
 
 #nav {
@@ -132,6 +131,7 @@ h4 {
 #footer {
 	clear: both;
 	color: #666;
+	border-top: 1px solid #ccc;
 	font-size: 84%;
 	padding: 1em;
 	margin: 0 0 1.5em 0;
