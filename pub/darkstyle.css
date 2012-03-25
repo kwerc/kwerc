@@ -1,5 +1,5 @@
 body {
-	background-color: #000;
+	background-color: #222;
 	color: #fff;
 	font-family: sans-serif;
 	padding: 0;
@@ -12,7 +12,7 @@ a {
 } 
 
 a:hover {
-	background-color: #000;
+	background-color: #222;
 }
 
 #menu {
@@ -80,14 +80,14 @@ h4 {
 	clear: both;
 	margin: 0;
 	padding: 0;
-	background-color: #222;
+	background-color: #000;
 	overflow: hidden;
 	border-top: 1px solid #333;
 	border-bottom: 1px solid #333;
 }
 
 #nav {
-	background-color: #222;
+	background-color: #000;
 	float: left;
 	margin: 0 1px 0 0;
 	padding: 1em 0;
