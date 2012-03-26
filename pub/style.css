@@ -17,6 +17,7 @@ a:hover {
 
 #menu {
 	clear: both;
+	overflow: hidden;
 	color: #069;
 	background-color: #17a;
 	padding: 0.7ex;
