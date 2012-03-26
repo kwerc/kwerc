@@ -11,6 +11,7 @@
 	</div>
 
 	<div id="menu">
+		<span class="left">
 % if(~ $site 'suckless.org') {
 		<a class="thisSite" href="http://suckless.org">home</a>
 % }
@@ -53,11 +54,12 @@
 % if not {
 		<a href="http://man.suckless.org">man</a>
 % }
-		<div class="right">
+		</span>
+		<span class="right">
 			<a href="http://dl.suckless.org">download</a>
 			<a href="http://hg.suckless.org">source</a>
 			<a href="http://eyjafjallajoekull.com">art</a>
-		</div>
+		</span>
 	</div>
 
 	<div id="content">
@@ -82,9 +84,9 @@
 	</div>
 
 	<div id="footer">
-	<div class="right">
+	<span class="right">
 	&copy; 2006-2012 suckless.org community | <a href="http://garbe.us/Contact">Impressum</a>
-	</div>
+	</span>
 	</div>
 </body>
 </html>
