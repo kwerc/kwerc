@@ -52,7 +52,6 @@
 		<span class="right">
 			<a href="http://dl.suckless.org">download</a>
 			<a href="http://git.suckless.org">source</a>
-			<a href="http://eyjafjallajoekull.com">art</a>
 		</span>
 	</div>
 
