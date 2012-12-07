@@ -48,16 +48,10 @@
 % if not {
 		<a href="http://tools.suckless.org">tools</a>
 % }
-% if(~ $site 'man.suckless.org') {
-		<a class="thisSite" href="http://man.suckless.org">man</a>
-% }
-% if not {
-		<a href="http://man.suckless.org">man</a>
-% }
 		</span>
 		<span class="right">
 			<a href="http://dl.suckless.org">download</a>
-			<a href="http://hg.suckless.org">source</a>
+			<a href="http://git.suckless.org">source</a>
 			<a href="http://eyjafjallajoekull.com">art</a>
 		</span>
 	</div>
