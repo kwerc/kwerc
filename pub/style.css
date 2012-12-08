@@ -9,7 +9,7 @@ body {
 a {
 	color: #058;
 	text-decoration: none;
-} 
+}
 
 a:hover {
 	background-color: #eee;
@@ -97,7 +97,7 @@ h4 {
 
 #nav ul {
 	margin: 0;
-	padding: 0; 
+	padding: 0;
 }
 
 #nav li {
@@ -123,8 +123,7 @@ h4 {
 }
 
 #main {
-	text-align: justify;
-	margin: 0 0 0 200px; 
+	margin: 0 0 0 200px;
 	padding: 1.5em;
 	max-width: 50em;
 }
