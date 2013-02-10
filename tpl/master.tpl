@@ -78,7 +78,7 @@
 
 	<div id="footer">
 	<span class="right">
-	&copy; 2006-2012 suckless.org community | <a href="http://garbe.us/Contact">Impressum</a>
+	&copy; 2006-2013 suckless.org community | <a href="http://garbe.us/Contact">Impressum</a>
 	</span>
 	</div>
 </body>
