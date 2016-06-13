@@ -7,7 +7,8 @@
 </head> 
 <body>
 	<div id="header">
-		<a href="/">%($"siteTitle%)</a> <span id="headerSubtitle">%($"siteSubtitle%)</span>
+		<a href="/"><img src="http://suckless.org/logo.svg" /></a>
+		<a id="headerLink" href="/">%($"siteTitle%)</a> <span id="headerSubtitle">%($"siteSubtitle%)</span>
 	</div>
 
 	<div id="menu">
@@ -30,6 +31,12 @@
 % if not {
 		<a href="http://st.suckless.org">st</a>
 % }
+% if(~ $site 'core.suckless.org') {
+		<a class="thisSite" href="http://core.suckless.org">core</a>
+% }
+% if not {
+		<a href="http://core.suckless.org">core</a>
+% }
 % if(~ $site 'sta.li') {
 		<a class="thisSite" href="http://sta.li">stali</a>
 % }
@@ -47,6 +54,12 @@
 % }
 % if not {
 		<a href="http://tools.suckless.org">tools</a>
+% }
+% if(~ $site 'libs.suckless.org') {
+		<a class="thisSite" href="http://libs.suckless.org">libs</a>
+% }
+% if not {
+		<a href="http://libs.suckless.org">libs</a>
 % }
 		</span>
 		<span class="right">
@@ -78,7 +91,7 @@
 
 	<div id="footer">
 	<span class="right">
-	&copy; 2006-2015 suckless.org community | <a href="http://garbe.us/Contact">Impressum</a>
+	&copy; 2006-2016 suckless.org community | <a href="http://garbe.us/Contact">Impressum</a>
 	</span>
 	</div>
 </body>
