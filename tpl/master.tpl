@@ -71,6 +71,7 @@
 		<span class="right">
 			<a href="http://dl.suckless.org">download</a>
 			<a href="http://git.suckless.org">source</a>
+			<a href="http://git.sta.li">stali</a>
 		</span>
 	</div>
 
