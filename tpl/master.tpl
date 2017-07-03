@@ -13,6 +13,12 @@
 
 	<div id="menu">
 		<span class="left">
+% if(~ $site 'ev.suckless.org') {
+		<a class="thisSite" href="http://ev.suckless.org">e.V.</a>
+% }
+% if not {
+		<a href="http://ev.suckless.org">e.V.</a>
+% }
 % if(~ $site 'suckless.org') {
 		<a class="thisSite" href="http://suckless.org">home</a>
 % }
@@ -61,12 +67,6 @@
 % if not {
 		<a href="http://libs.suckless.org">libs</a>
 % }
-% if(~ $site 'ev.suckless.org') {
-		<a class="thisSite" href="http://ev.suckless.org">e.V.</a>
-% }
-% if not {
-		<a href="http://ev.suckless.org">e.V.</a>
-% }
 		</span>
 		<span class="right">
 			<a href="http://dl.suckless.org">download</a>
@@ -97,7 +97,7 @@
 
 	<div id="footer">
 	<span class="right">
-	&copy; 2006-2016 suckless.org community | <a href="http://garbe.us/Contact">Impressum</a>
+	&copy; 2006-2017 suckless.org community | <a href="http://ev.suckless.org/impressum">Impressum</a>
 	</span>
 	</div>
 </body>
