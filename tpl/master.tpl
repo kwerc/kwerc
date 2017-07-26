@@ -13,12 +13,6 @@
 
 	<div id="menu">
 		<span class="left">
-% if(~ $site 'ev.suckless.org') {
-		<a class="thisSite" href="http://ev.suckless.org">e.V.</a>
-% }
-% if not {
-		<a href="http://ev.suckless.org">e.V.</a>
-% }
 % if(~ $site 'suckless.org') {
 		<a class="thisSite" href="http://suckless.org">home</a>
 % }
@@ -71,7 +65,7 @@
 		<span class="right">
 			<a href="http://dl.suckless.org">download</a>
 			<a href="http://git.suckless.org">source</a>
-			<a href="http://git.sta.li">stali</a>
+			<a href="http://ev.suckless.org">e.V.</a>
 		</span>
 	</div>
 
