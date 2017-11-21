@@ -7,7 +7,7 @@
 </head> 
 <body>
 	<div id="header">
-		<a href="/"><img src="//suckless.org/logo.svg" /></a>
+		<a href="/"><img src="//suckless.org/logo.png" width="23" height="15" /></a>
 		<a id="headerLink" href="/">%($"siteTitle%)</a> <span id="headerSubtitle">%($"siteSubtitle%)</span>
 	</div>
 
