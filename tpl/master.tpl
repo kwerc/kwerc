@@ -1,13 +1,13 @@
 <!doctype html>
 <html>
 <head> 
+	<meta charset="utf-8">
 	<title>%($pageTitle%)</title>
 	<link rel="stylesheet" type="text/css" href="/pub/style.css">
-	<meta charset="utf-8"> 
 </head> 
 <body>
 	<div id="header">
-		<a href="/"><img src="//suckless.org/logo.png" width="23" height="15" /></a>
+		<a href="/"><img src="//suckless.org/logo.png" width="23" height="15" border="0" /></a>
 		<a id="headerLink" href="/">%($"siteTitle%)</a> <span id="headerSubtitle">%($"siteSubtitle%)</span>
 	</div>
 
