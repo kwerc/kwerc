@@ -37,12 +37,6 @@
 % if not {
 		<a href="//core.suckless.org">core</a>
 % }
-% if(~ $site 'sta.li') {
-		<a class="thisSite" href="//sta.li">stali</a>
-% }
-% if not {
-		<a href="//sta.li">stali</a>
-% }
 % if(~ $site 'surf.suckless.org') {
 		<a class="thisSite" href="//surf.suckless.org">surf</a>
 % }
@@ -91,7 +85,7 @@
 
 	<div id="footer">
 	<span class="right">
-	&copy; 2006-2017 suckless.org community | <a href="//ev.suckless.org/impressum">Impressum</a> | <a href="//ev.suckless.org">e.V.</a>
+	&copy; 2006-2018 suckless.org community | <a href="//ev.suckless.org/impressum">Impressum</a> | <a href="//ev.suckless.org">e.V.</a>
 	</span>
 	</div>
 </body>
