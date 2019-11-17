@@ -1,0 +1,10 @@
+# look - look unix port from plan9
+# Depends on ../lib9
+
+TARG      = look
+
+include ../std.mk
+
+pre-uninstall:
+
+post-install:
