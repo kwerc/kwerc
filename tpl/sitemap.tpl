@@ -1,8 +1,8 @@
-<h1>Site map</h1>
+<h1>Sitemap</h1>
 
 %{
-tmpfile=/tmp/werc_sitemap_$pid.txt
-tmpfilex=/tmp/werc_sitemapx_$pid.txt
+tmpfile=/tmp/kwerc_sitemap_$pid.txt
+tmpfilex=/tmp/kwerc_sitemapx_$pid.txt
 saveddf=$dirfilter
 
 MON2NUM='s/Jan/01/; s/Feb/02/; s/Mar/03/; s/Apr/04/; s/May/05/; s/Jun/06/; s/Jul/07/; s/Aug/08/; s/Sep/09/; s/Oct/10/; s/Nov/11/; s/Dec/12/;'
@@ -13,11 +13,11 @@ fn get_mdate {
     echo $t(6)^'-'^$t(2)^'-'^$t(3)
 }
 
-fn listDir {
+fn list_dir {
     d=$1
     dirfilter=$saveddf
-    if(test -f $d/_werc/config)
-        . $d/_werc/config
+    if(test -f $d/_kwerc/config)
+        . $d/_kwerc/config
 
     if(~ $#perm_redir_to 0) {
         echo '<ul class="sitemap-list">'
@@ -32,14 +32,14 @@ fn listDir {
             echo $base_url^$u >> $tmpfile
             echo '<url><loc>'$base_url^$u'</loc><lastmod>'^`{get_mdate $i}^'</lastmod></url>' >> $tmpfilex
             if(test -d $i)
-                @{ listDir $i }
+                @{ list_dir $i }
         }
         echo '</ul>'
     }
 }
 
 
-fltr_cache listDir $sitedir/
+fltr_cache list_dir $sitedir/
 
 if(test -s $tmpfile) {
     mv $tmpfile $sitedir/sitemap.txt &

@@ -1,56 +1,20 @@
-# Werc builtin handlers
-
-fn nav_tree {
-    echo '<ul>'
-    if(! ~ $#menuTitle 0) {
-        if(~ $"req_paths_list /)
-            echo '<li><a href="/" class="thisPage">'$"menuTitle'</a></li>'
-        if not
-            echo '<li><a href="/">'$"menuTitle'</a></li>'
-    }
-    # Ignore stderr, last path element might be a file that doesn't exist (eg., foo for foo.md)
-    # /./ to deal with p9p's ls failure to follow dir symlinks otherwise
-    ls -F $sitedir/./$req_paths_list >[2]/dev/null \
-        | { 
-            sed $dirfilter'/\/[^_.\/][^\/]*(\.(md|1)|\/)$/!d; s!^'$sitedir'!!; '$dirclean 
-            if(! ~ $#synth_paths 0) echo $synth_paths | tr ' ' $NEW_LINE 
-        } | sort -u | awk -F/ ' 
-    function p(x, y, s) { for(i=0; i < x-y; i+=1) print s }
-    BEGIN { lNF=2; }
-    { 
-        d = ""
-        if(match($0, "/$"))
-            d = "/"
-        sub("/$", "") # Strip trailing / for dirs so NF is consistent 
-
-        p(NF, lNF, "<li><ul>")
-        p(lNF, NF, "</ul></li>")
-        lNF = NF
-
-        bname = $NF d
-        path = $0 d
-        gsub(/[\-_]/, " ", bname)
-
-        # To avoid false matches add trailing / even for plain files to act as delimiter
-        pa = path
-        gsub(/[^\/]$/, "&/", pa) 
-
-        if(index(ENVIRON["req_path"] "/", pa) == 1)
-            print "<li><a href=\"" path "\" class=\"thisPage\"> " bname "</a></li>"
-        else 
-            print "<li><a href=\"" path "\">" bname "</a></li>"
-    }
-    END { p(lNF, 2, "</ul></li>"); }'
-    echo '</ul>'
-}
-
-fn md_handler { $formatter $1 }
+fn md_handler { fltr_cache markdown $1 }
 
 fn tpl_handler { template $* }
 
-fn man_handler {
+fn html_handler {
+    # body states: 0 = no <body> found, 2 = after <body>, 1 = after <body></body>, -1 = after </body>
+    awk 'gsub(".*<[Bb][Oo][Dd][Yy][^>]*>", "") > 0 {body=2}
+         gsub("</ *[Bb][Oo][Dd][Yy][^>]*>.*", "") > 0 {print; body=body-1}
+         body==2 {print}
+         body==0 {buf=buf "\n" $0}
+         END {if(body<=0) {print buf}}' < $1
+}
+
+fn txt_handler {
+    # Note: Words are not broken, even if they are way beyond 80 chars long
     echo '<pre>'
-    $man_formatter $1
+    sed 's/</\&lt;/g; s/>/\&gt;/g' < $1 | fmt -l 80 -j
     echo '</pre>'
 }
 
@@ -69,27 +33,37 @@ fn setup_handlers {
         local_file=$local_path.md
         handler_body_main=(md_handler $local_file)
     }
-    if not if(test -f $local_path.1) {
-        local_file=$local_path.1
-        handler_body_main=(man_handler $local_file)
-    }
     if not if(test -f $local_path.tpl) {
         local_file=$local_path.tpl
         handler_body_main=(tpl_handler $local_file)
     }
+    if not if(test -f $local_path.html) {
+        local_file=$local_path.html
+        handler_body_main=(html_handler $local_file)
+    }
     if not if(test -f tpl^$req_path^.tpl)
         handler_body_main=(tpl_handler tpl^$req_path^.tpl)
+    if not if(test -f $local_path.txt) {
+        local_file=$local_path.txt
+        handler_body_main=(txt_handler $local_file)
+    }
+
     if(! ~ $#handler_body_main 0)
         { } # We are done
-    # Dir listing
-    if not if(~ $local_path */index)
+    if not if(~ $local_path */index) {
         handler_body_main=(dir_listing_handler $req_path)
-    # Fallback static file handler
+        if(test -f $sitedir$req_path'_header.md')
+            ll_add handlers_body_head md_handler $sitedir$req_path'_header.md'
+        if(test -f $sitedir$req_path'_footer.md')
+            ll_add handlers_body_foot md_handler $sitedir$req_path'_footer.md'
+    }
+    # Canonize explicit .html urls, the web server might handle this first!
+    if not if(~ $local_path *.html && test -f $local_path)
+        perm_redirect `{echo $req_path | sed 's/.html$//'}
     if not if(test -f $local_path)
         static_file $local_path
-    if not if(~ $req_path /pub/* && test -f .$req_path)
+    if not if(~ $req_path /static/* && test -f .$req_path)
         static_file .$req_path
-    # File not found
     if not
         setup_404_handler
 }
@@ -103,4 +77,3 @@ fn setup_404_handler {
 
 fn run_handlers { for(h in $*) run_handler $$h }
 fn run_handler { $*(1) $*(2-) }
-

@@ -1,7 +1,0 @@
-# General options
-plan9port=$PLAN9
-path=($plan9port/bin . ./bin ./bin/contrib /bin /usr/bin /usr/local/bin)
-formatter=(fltr_cache markdown)
-man_formatter=(troff -N -man)
-debug=1
-sitesdir='/var/www/sites'

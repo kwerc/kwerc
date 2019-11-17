@@ -1,5 +1,5 @@
-##############################################################################
-# Useful CGI stuff
+################################################################################
+# CGI utils
 
 fn dprint { echo $* >[1=2] }
 
@@ -54,8 +54,8 @@ fn select_mime {
     echo $m
 }
 
-##############################################################################
-# Generic rc programming helpers
+################################################################################
+# rc utils
 
 # Manage nested lists
 fn ll_add {
@@ -70,12 +70,12 @@ fn ll_addh {
     $1=( $_l $$1 )
 }
 
-
 NEW_LINE='
 '
 
-##############################################################################
-# To be used from config files
+################################################################################
+# Utils to be used from config files
+
 fn conf_perm_redirect {
     if(~ $#* 1)
         perm_redir_to=$1
@@ -84,8 +84,21 @@ fn conf_perm_redirect {
 }
 
 fn get_tpl_file {
-    if(test -f $sitedir/_werc/tpl/$1)
-        echo -n $sitedir/_werc/tpl/$1
+    cd $sitedir
+    if(test -f _kwerc/tpl/$1)
+        file=$sitedir/_kwerc/tpl/$1
+    for(i in $args) {
+        if(test -d $i) {
+            cd $i
+            if(test -f _kwerc/tpl/$1)
+                file=`{pwd}^/_kwerc/tpl/$1
+        }
+    }
+    cd $kwerc_root
+    if(! ~ $#file 0)
+        echo -n $file
+    if not if(test -f $sitedir/_kwerc/tpl/$1)
+        echo -n $sitedir/_kwerc/tpl/$1
     if not if(test -f tpl/$1.local)
         echo -n tpl/$1.local
     if not if(test -f tpl/$1)

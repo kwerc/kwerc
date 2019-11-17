@@ -1,3 +1,7 @@
-<h1>The requested document at '<i>%($base_url$"req_path%)</i>' doesn't exist</h1>
-
-<p><strong>Or take a look at the <a href="/sitemap">sitemap</a>.</strong></p>
+<h1>Error 404</h1>
+<p>The requested document at <em>%($base_url$"req_path%)</em> doesn't exist.</p>
+<ul>
+    <li><a href="javascript:history.back()">Back</a></li>
+    <li><a href="/">Home</a></li>
+    <li><a href="/sitemap">Sitemap</a></li>
+</ul>
