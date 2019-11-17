@@ -1,0 +1,20 @@
+.TH URLENCODE 1
+.SH NAME
+urlencode \- URL encode and decode files
+.SH SYNOPSIS
+.B urlencode
+[
+.B -d
+] [
+.I file
+]
+.SH DESCRIPTION
+.I Urlencode
+is a helper program to URL encode and decode files. The
+.B -d
+flag insead of encoding, decodes URL encoded file. If no
+.I file
+is given, standard input is read. The resulting data
+is written to standard output.
+.SH SOURCE
+.B \*9/src/urlencode/urlencode.c
