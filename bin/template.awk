@@ -1,4 +1,4 @@
-#!/usr/bin/env awk -f
+#!/usr/bin/env mawk -f
 function pr(str) {
 	if(lastc !~ "[{(]")
 		gsub(/'/, "''", str)

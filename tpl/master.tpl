@@ -4,10 +4,6 @@
     <title>%($page_title%)</title>
     <link rel="icon" href="/favicon.png" type="image/png" />
 
-% for(stylesheet in `{ls -p static/css}) {
-    <link rel="stylesheet" type="text/css" href="/static/css/%($stylesheet%)">
-% }
-
     <meta charset="UTF-8">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
@@ -24,9 +20,5 @@
 % run_handlers $handlers_body_head
 % run_handler $handler_body_main
 % run_handlers $handlers_body_foot
-
-% for(script in `{ls -p static/js}) {
-    <script src="/static/css/%($stylesheet%)" type="text/javascript"></script>
-% }
 </body>
 </html>

@@ -1,4 +1,4 @@
-#!/usr/bin/env rc
+#!/usr/lib/9base/bin/rc
 . ./util.rc
 . ./handlers.rc
 . ./fltr_cache.rc
@@ -12,14 +12,16 @@ difs=$ifs # Used to restore default ifs when needed
 dirfilter='s/\*$//; s,/+\./+,/,g; s,^\./,,; /\/[._][^\/]/d; /'$forbidden_uri_chars'/d; /\/sitemap\.xml$/d; /\/index\.(md|html|txt|tpl)$/d; /\/(robots|sitemap)\.txt$/d; /_kwerc\/?$/d; '
 dirclean=' s/\.(tpl|md|html|txt)$//; '
 
-path=(. ./bin $PLAN9/bin /usr/local/bin /usr/bin /bin)
-
 http_content_type='text/html'
 ll_add handlers_bar_left nav_tree
 kwerc_root=`{pwd}
 
 if(test -f config)
     . ./config
+if not
+    . ./config.example
+
+path=(. ./bin $PLAN9/bin /usr/local/bin /usr/bin /bin)
 
 fn kwerc_exec_request {
     site=$SERVER_NAME
@@ -38,7 +40,6 @@ fn kwerc_exec_request {
     local_file=''
     ifs='/' { args=`{echo -n $req_path} }
     master_template=`{get_tpl_file master.tpl}
-dprint $master_template
 
     if(~ $req_path */index)
         perm_redirect `{echo $req_path | sed 's,/index$,/,'}
@@ -114,4 +115,7 @@ dprint $master_template
     template $master_template | awk_buffer
 }
 
-kwerc_exec_request  >>[2]log
+if(! ~ $"logfile '')
+    kwerc_exec_request >>[2]$logfile
+if not
+    kwerc_exec_request

@@ -3,6 +3,8 @@
 
 fn dprint { echo $* >[1=2] }
 
+fn escape_html { sed 's/&/\&amp;/g; s/</\&lt;/g; s/>/\&gt;/g' $* }
+
 fn http_redirect {
     if(~ $1 http://* https://*)
         t=$1
