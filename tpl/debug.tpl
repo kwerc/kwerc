@@ -1,4 +1,4 @@
-% if(! ~ $#debug_shell 0) {
+% if(! ~ $"debug_shell true) {
 <form method="POST" name="prompt">
 <input size="80" type="text" name="command" value="%($"post_arg_command%)">
 <input type="submit" Value="Run">
@@ -21,8 +21,10 @@ fn evl {
 %}
 % }
 
+% if(! ~ $"debug true) {
 <hr><pre>
 % env | escape_html
 </pre><hr>
 
 % umask
+% }

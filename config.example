@@ -1,19 +1,20 @@
-site_title='kwerc'
-
+site_title=kwerc
 PLAN9=/usr/lib/9base
-logfile='log'
+logfile=log
+#debug=true
+#debug_shell=true
 
-#redis_host='127.0.0.1'
-#redis_port='6379'
+#redis_host=127.0.0.1
+#redis_port=6379
 
 #extra_headers=($"extra_headers '<link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/4.3.0/firebase-ui-auth.css" />')
 #ll_add handlers_body_foot tpl_handler `{get_tpl_file firebase.tpl}
-#firebase_key=''
-#firebase_domain='example.firebaseapp.com'
-#firebase_apiKey=''
-#firebase_authDomain='example.firebaseapp.com'
-#firebase_databaseURL='https://example.firebaseio.com'
-#firebase_projectId='example'
-#firebase_storageBucket='example.appspot.com'
-#firebase_messagingSenderId=''
-#firebase_appId=''
+#firebase_key=
+#firebase_domain=example.firebaseapp.com
+#firebase_apiKey=
+#firebase_authDomain=example.firebaseapp.com
+#firebase_databaseURL=https://example.firebaseio.com
+#firebase_projectId=example
+#firebase_storageBucket=example.appspot.com
+#firebase_messagingSenderId=
+#firebase_appId=
