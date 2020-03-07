@@ -1,4 +1,4 @@
-% if(! ~ $"debug_shell true) {
+% if(~ $"debug_shell true) {
 <form method="POST" name="prompt">
 <input size="80" type="text" name="command" value="%($"post_arg_command%)">
 <input type="submit" Value="Run">
@@ -13,15 +13,15 @@ fn evl {
     #rc -c 'flag x +;{'^$post_arg_command'} |[2] awk ''{print ">> "$0}'''
     rc -c 'flag s +; flag x +;'^$post_arg_command
 }
-    if(! ~ $#post_arg_command 0 && ! ~ $#post_arg_command '') {
-        echo '<hr><pre>'
-        evl | escape_html |[2] awk '{print "<b>"$0"</b>"}' 
-        echo '</pre>'
-    }
+if(! ~ $#post_arg_command 0 && ! ~ $#post_arg_command '') {
+    echo '<hr><pre>'
+    evl | escape_html |[2] awk '{print "<b>"$0"</b>"}'
+    echo '</pre>'
+}
 %}
 % }
 
-% if(! ~ $"debug true) {
+% if(~ $"debug true) {
 <hr><pre>
 % env | escape_html
 </pre><hr>

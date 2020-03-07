@@ -23,12 +23,9 @@ fn list_dir {
         echo '<ul class="sitemap-list">'
 
         for(i in `{ls -dF $d^*/ $d^*.md $d^*.html $d^*.txt >[2]/dev/null | sed $dirfilter}) {
-            desc=`{get_file_title $i}
             u=`{echo $i|sed 's!'$sitedir'!!; '$dirclean's!/index$!/!; '}
-            if(! ~ $#desc 0 && ! ~ $desc '')
-                desc=' - '$"desc
             n=`{echo /$u|sed 's/[\-_]/ /g; s,.*/([^/]+)/?$,\1,'}
-            echo '<li><a href="'$u'">'^$"n^'</a>' $"desc '</li>' 
+            echo '<li><a href="'$u'">'^$"n^'</a></li>' 
             echo $base_url^$u >> $tmpfile
             echo '<url><loc>'$base_url^$u'</loc><lastmod>'^`{get_mdate $i}^'</lastmod></url>' >> $tmpfilex
             if(test -d $i)

@@ -1,11 +1,12 @@
-#!/usr/lib/9base/bin/rc
+#!/kwerc/bin/rc
 . ./util.rc
 . ./handlers.rc
 . ./fltr_cache.rc
+. ./rcedis.rc
 cd ..
 
 forbidden_uri_chars='[^a-zA-Z0-9_+\-\/\.,:]'
-difs=$ifs # Used to restore default ifs when needed 
+difs=$ifs # Used to restore default ifs when needed
 
 # Expected input: ls -F style, $sitedir/path/to/files/
 #          <ls -F+x><symlink hack><Useless?><hiden files  >
@@ -21,7 +22,7 @@ if(test -f config)
 if not
     . ./config.example
 
-path=(. ./bin $PLAN9/bin /usr/local/bin /usr/bin /bin)
+path=(. ./bin /usr/local/bin /usr/bin /bin)
 
 fn kwerc_exec_request {
     site=$SERVER_NAME
@@ -41,6 +42,10 @@ fn kwerc_exec_request {
     ifs='/' { args=`{echo -n $req_path} }
     master_template=`{get_tpl_file master.tpl}
 
+    # Preload post args for templates where cgi's stdin is not accessible
+    if(~ $REQUEST_METHOD POST)
+        load_post_args
+
     if(~ $req_path */index)
         perm_redirect `{echo $req_path | sed 's,/index$,/,'}
 
@@ -55,9 +60,6 @@ fn kwerc_exec_request {
         perm_redirect `{echo $req_path | sed 's/[.,;:)]$//'}
     if not if(test -d $local_path)
         perm_redirect $req_path^'/'
-
-    if(! ~ $#args 0)
-        ifs=$NEW_LINE { page_title=`{ echo $args|sed -e 's/ / - /g' -e 's/([a-z])-([a-z])/\1 \2/g' -e 's/_/ /g' } }
 
     cd $sitedir
     req_paths_list='/' # Note: req_paths_list doesn't include 'synthetic' dirs.
@@ -81,9 +83,9 @@ fn kwerc_exec_request {
     for(l in $perm_redir_patterns) {
         p=$$l
         r=$p(1)
-        # If target is absolute, then patern must match whole string
+        # If target is absolute, then pattern must match whole string
         if(~ $p(2) http://* https://*)
-            r='^'$r 
+            r='^'$r
         t=`{ echo $req_path | sed 's!'^$r^'!'^$p(2)^'!' } # Malicious danger!
 
         if(! ~ $"t '' $req_path)
@@ -91,16 +93,6 @@ fn kwerc_exec_request {
     }
 
     setup_handlers
-
-    if(! ~ $local_file '') {
-        t=`{get_file_title $local_file}
-        if(! ~ $"t '')
-            page_title=$t
-    }
-    if(~ $"page_title '')
-        page_title=$"site_title
-    if not
-        page_title=$"page_title' &middot; '$"site_title
 
     for(h in $extraHttpHeaders)
         echo $h
@@ -111,11 +103,8 @@ fn kwerc_exec_request {
 
     if(~ $REQUEST_METHOD HEAD)
         exit
-    
+
     template $master_template | awk_buffer
 }
 
-if(! ~ $"logfile '')
-    kwerc_exec_request >>[2]$logfile
-if not
-    kwerc_exec_request
+kwerc_exec_request

@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
 <head> 
-    <title>%($page_title%)</title>
+    <title>%($site_title%)</title>
     <link rel="icon" href="/favicon.png" type="image/png" />
 
     <meta charset="UTF-8">
