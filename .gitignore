@@ -1,0 +1,13 @@
+*.d
+*.o
+.depend
+config.h
+parse.[ch]
+sigmsgs.[ch]
+statval.h
+rc
+history
+mksignal
+mkstatval
+tripping
+ylwrap
