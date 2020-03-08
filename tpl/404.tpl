@@ -3,5 +3,4 @@
 <ul>
     <li><a href="javascript:history.back()">Back</a></li>
     <li><a href="/">Home</a></li>
-    <li><a href="/sitemap">Sitemap</a></li>
 </ul>
