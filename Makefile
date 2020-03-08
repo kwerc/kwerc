@@ -14,7 +14,7 @@ sbase:
 	$(MAKE) -C vendor/sbase CC=$(CC) LDFLAGS=$(LDFLAGS) PREFIX=$(PREFIX) MANPREFIX=$(MANPREFIX) install
 
 mawk:
-	touch vendor/mawk/array.c vendor/mawk/array.h
+	touch vendor/mawk/array.c vendor/mawk/array.h vendor/mawk/parse.c vendor/mawk/parse.h
 	cd vendor/mawk && ./configure --prefix=$(PREFIX) --mandir=$(MANPREFIX)
 	$(MAKE) -C vendor/mawk install
 
