@@ -20,11 +20,11 @@ clean:
 	@echo cleaned 9base
 
 install: all
-	@for i in ${SUBDIRS}; do cd $$i; ${MAKE} install || exit; cd ..; done
+	@cd rc; ${MAKE} install || exit; cd ..
 	@echo installed 9base to ${DESTDIR}${PREFIX}
 
 uninstall:
-	@for i in ${SUBDIRS}; do cd $$i; ${MAKE} uninstall || exit; cd ..; done
+	@cd rc; ${MAKE} uninstall || exit; cd ..
 	@echo uninstalled 9base
 
 dist: clean
