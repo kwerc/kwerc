@@ -1,4 +1,4 @@
-#!/kwerc/bin/mawk -f
+#!/bin/mawk -f
 function pr(str) {
 	if(lastc !~ "[{(]")
 		gsub(/'/, "''", str)

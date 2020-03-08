@@ -1,4 +1,4 @@
-#!/kwerc/bin/rc
+#!/bin/rc -m /rc/rcmain
 . ./util.rc
 . ./handlers.rc
 . ./fltr_cache.rc
