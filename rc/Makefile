@@ -32,14 +32,14 @@ install: ${TARG}
 	@mkdir -p ${DESTDIR}${MANPREFIX}/man1
 	@cp -f ${MANFILES} ${DESTDIR}${MANPREFIX}/man1
 	@chmod 444 ${DESTDIR}${MANPREFIX}/man1/${MANFILES}
-	@mkdir -p ${DESTDIR}${PREFIX}/etc
-	@cp -f rcmain ${DESTDIR}${PREFIX}/etc
-	@chmod 755 ${DESTDIR}${PREFIX}/etc/rcmain
+	@mkdir -p ${DESTDIR}${PREFIX}/rc
+	@cp -f rcmain ${DESTDIR}${PREFIX}/rc
+	@chmod 755 ${DESTDIR}${PREFIX}/rc/rcmain
 
 uninstall:
 	rm -f ${DESTDIR}${PREFIX}/bin/${TARG}
 	rm -f ${DESTDIR}${MANPREFIX}/man1/${MANFILES}
-	rm -f ${DESTDIR}${PREFIX}/etc/rcmain
+	rm -f ${DESTDIR}${PREFIX}/rc/rcmain
 
 .c.o:
 	@echo CC $*.c
