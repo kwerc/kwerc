@@ -1,7 +1,9 @@
-site_title=kwerc
-#debug=true       # enables the /debug page - insecure; disable in production!
-#debug_shell=true # enables shell on /debug - insecure; disable in production!
+path=($kwerc_root/bin)
+awk=mawk
 
 #redis_host=127.0.0.1
 #redis_port=6379
 #redis_password=
+
+#debug=true       # enables the /debug page - insecure; disable in production!
+#debug_shell=true # enables shell on /debug - insecure; disable in production!

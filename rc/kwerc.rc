@@ -1,10 +1,10 @@
-#!/bin/rc -m /rc/rcmain
+#!/bin/rc
 . ./util.rc
 . ./handlers.rc
 . ./rcedis.rc
 cd ..
 
-forbidden_uri_chars='[^a-zA-Z0-9_+\-\/\.,:]'
+forbidden_uri_chars='[^a-zA-Z0-9_+-\/\.,:]'
 difs=$ifs # Used to restore default ifs when needed
 
 # Expected input: ls -F style, $sitedir/path/to/files/
@@ -21,8 +21,6 @@ if(test -f config)
 if not
     . ./config.example
 
-path=(. ./bin /usr/local/bin /usr/bin /bin)
-
 fn kwerc_exec_request {
     site=$SERVER_NAME
     if(~ $HTTPS on) protocol=https
@@ -34,7 +32,7 @@ fn kwerc_exec_request {
     # Note: $REQUEST_URI is not officially in CGI 1.1, but seems to be de-facto
     # Note: We only urldecode %5F->'_' because some sites (stackoverflow.com?) urlencode it in their links,
     # perhaps we should completely urldecode the whole url.
-    req_path=`{echo -n $REQUEST_URI | sed 's/\?.*//; s!//+!/!g; s/%5[Ff]/_/g; s/'^$forbidden_uri_chars^'//g; s/\.\.*/./g; 1q'}
+    req_path=`{echo -n $REQUEST_URI | sed 's/?.*//; s!//+!/!g; s/%5[Ff]/_/g; s/'^$forbidden_uri_chars^'//g; s/\.\.*/./g; 1q'}
     req_url=$base_url^$req_path
     local_path=$sitedir$req_path
     local_file=''
@@ -48,13 +46,8 @@ fn kwerc_exec_request {
     if(~ $req_path */index)
         perm_redirect `{echo $req_path | sed 's,/index$,/,'}
 
-    if(~ $local_path */) {
-        if(test -d $local_path)
-            local_path=$local_path^'index'
-        # XXX: This redir might step on apps with synthetic dirs.
-        if not if(ls `{basename -d $local_path}^* >/dev/null >[2]/dev/null)
-            perm_redirect `{echo $req_path|sed 's,/+$,,'}
-    }
+    if(~ $local_path */ && test -d $local_path)
+        local_path=$local_path^'index'
     if not if(~ $req_path *'.' *',' *';' *':')
         perm_redirect `{echo $req_path | sed 's/[.,;:)]$//'}
     if not if(test -d $local_path)
