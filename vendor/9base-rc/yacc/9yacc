@@ -1,4 +1,0 @@
-#!/bin/sh
-PLAN9="`pwd`/.."
-export PLAN9
-../yacc/yacc $*
