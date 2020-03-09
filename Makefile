@@ -1,14 +1,19 @@
 export
 CC		:= musl-gcc
 LDFLAGS		:= -static
-OBJTYPE		:= x86_64
 PREFIX		:= $(dir $(realpath $(firstword $(MAKEFILE_LIST))))
 MANPREFIX	:= $(PREFIX)/man
+YACC		:= $(PREFIX)/vendor/yacc/oyacc
+EDIT		:= null
 
-all: 9base-rc sbase mawk cgd redli
+all: yacc rc sbase mawk cgd redli
 
-9base-rc:
-	$(MAKE) -C vendor/9base-rc CC=$(CC) LDFLAGS=$(LDFLAGS) OBJTYPE=$(OBJTYPE) PREFIX=$(PREFIX) MANPREFIX=$(MANPREFIX) install
+yacc:
+	cd vendor/yacc && ./configure
+	$(MAKE) -C vendor/yacc
+
+rc: yacc
+	$(MAKE) -C vendor/rc CC=$(CC) LDFLAGS=$(LDFLAGS) PREFIX=$(PREFIX) MANPREFIX=$(MANPREFIX) YACC=$(YACC) EDIT=$(EDIT) install
 
 sbase:
 	$(MAKE) -C vendor/sbase CC=$(CC) LDFLAGS=$(LDFLAGS) PREFIX=$(PREFIX) MANPREFIX=$(MANPREFIX) install
@@ -27,7 +32,9 @@ redli:
 	mkdir -p $(PREFIX)/bin && cp vendor/redli/redli $(PREFIX)/bin/
 
 clean:
-	$(MAKE) -C vendor/9base-rc PREFIX=$(PREFIX) MANPREFIX=$(MANPREFIX) uninstall clean
+	$(MAKE) -C vendor/yacc clean
+	rm $(PREFIX)/bin/rc $(MANPREFIX)/man1/rc.1
+	$(MAKE) -C vendor/rc PREFIX=$(PREFIX) MANPREFIX=$(MANPREFIX) clean
 	$(MAKE) -C vendor/sbase PREFIX=$(PREFIX) MANPREFIX=$(MANPREFIX) uninstall clean
 	$(MAKE) -C vendor/mawk uninstall clean
 	rm $(PREFIX)/bin/cgd; cd vendor/cgd && go clean

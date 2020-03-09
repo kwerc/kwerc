@@ -19,3 +19,5 @@ vendor/mawk/man/Makefile
 vendor/mawk/man2html.tmp
 vendor/mawk/mawk
 vendor/mawk/scancode.c
+vendor/yacc/Makefile
+vendor/yacc/config.h
