@@ -1,0 +1,9 @@
+This is mveety's modifications to es to make it easier to live with on
+unix, plus recent changes from upstream es that were missing from
+mveety's branch.  use configure/make(1) as normal to build and
+install.
+
+Tested on FreeBSD 11.1, OpenBSD 6.3, and Ubuntu 18.04, so it should
+build everywhere sane. I would like testing and reports back for
+solaris/illumos, macOS, Haiku, NetBSD, and anything else you can think
+of.
