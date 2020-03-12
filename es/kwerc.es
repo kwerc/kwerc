@@ -12,7 +12,6 @@ dirfilter='s/\*$//; s,/+\./+,/,g; s,^\./,,; /\/[._][^\/]/d; /'$forbidden_uri_cha
 dirclean=' s/\.(tpl|md|html|txt)$//; '
 
 http_content_type='text/html'
-ll_add handlers_bar_left nav_tree
 kwerc_root=`{pwd}
 
 if {test -f config} {

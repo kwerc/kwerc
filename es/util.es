@@ -194,7 +194,7 @@ fn select_mime {
 }
 
 ################################################################################
-# rc utils
+# es utils
 
 # Manage nested lists
 fn ll_add {
