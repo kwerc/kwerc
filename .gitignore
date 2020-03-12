@@ -1,2 +1,4 @@
+Makefile
+config.h
 oyacc
 yacc
