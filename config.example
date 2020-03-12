@@ -5,5 +5,4 @@ awk=mawk
 #redis_port=6379
 #redis_password=
 
-#debug=true       # enables the /debug page - insecure; disable in production!
-#debug_shell=true # enables shell on /debug - insecure; disable in production!
+#debug=true # enables the /debug page - insecure; disable in production!

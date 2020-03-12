@@ -1,11 +1,10 @@
-#!/bin/rc
-. ./util.rc
-. ./handlers.rc
-. ./rcedis.rc
+#!/kwerc/bin/es
+. ./util.es
+. ./handlers.es
+. ./resdis.es
 cd ..
 
 forbidden_uri_chars='[^a-zA-Z0-9_+-\/\.,:]'
-difs=$ifs # Used to restore default ifs when needed
 
 # Expected input: ls -F style, $sitedir/path/to/files/
 #          <ls -F+x><symlink hack><Useless?><hiden files  >
@@ -16,15 +15,19 @@ http_content_type='text/html'
 ll_add handlers_bar_left nav_tree
 kwerc_root=`{pwd}
 
-if(test -f config)
+if {test -f config} {
     . ./config
-if not
+} {
     . ./config.example
+}
 
 fn kwerc_exec_request {
     site=$SERVER_NAME
-    if(~ $HTTPS on) protocol=https
-    if not protocol=http
+    if {~ $HTTPS on} {
+        protocol=https
+    } {
+        protocol=http
+    }
     base_url=$protocol://$site
     sitedir=$kwerc_root/site
     current_date_time=`{date}
@@ -36,65 +39,74 @@ fn kwerc_exec_request {
     req_url=$base_url^$req_path
     local_path=$sitedir$req_path
     local_file=''
-    ifs='/' { args=`{echo -n $req_path} }
+    args=`` / {echo -n $req_path}
     master_template=`{get_tpl_file master.tpl}
 
     # Preload post args for templates where cgi's stdin is not accessible
-    if(~ $REQUEST_METHOD POST)
+    if {~ $REQUEST_METHOD POST} {
         load_post_args
+    }
 
-    if(~ $req_path */index)
+    if {~ $req_path */index} {
         perm_redirect `{echo $req_path | sed 's,/index$,/,'}
+    }
 
-    if(~ $local_path */ && test -d $local_path)
+    if {~ $local_path */ && test -d $local_path} {
         local_path=$local_path^'index'
-    if not if(~ $req_path *'.' *',' *';' *':')
+    } {~ $req_path *'.' *',' *';' *':'} {
         perm_redirect `{echo $req_path | sed 's/[.,;:)]$//'}
-    if not if(test -d $local_path)
+    } {test -d $local_path} {
         perm_redirect $req_path^'/'
+    }
 
     cd $sitedir
     req_paths_list='/' # Note: req_paths_list doesn't include 'synthetic' dirs.
     conf_wd='/' # Used in config files to know where we are in the document tree.
-    if(test -f _kwerc/config)
+    if {test -f _kwerc/config} {
         . _kwerc/config
-    for(i in $args) {
+    }
+    for(i = $args) {
         conf_wd=$conf_wd^$i
         req_paths_list=($req_paths_list $conf_wd)
-        if(test -d $i) {
+        if {test -d $i} {
             conf_wd=$conf_wd'/'
             cd $i
-            if(test -f _kwerc/config)
+            if {test -f _kwerc/config}
                 . _kwerc/config
         }
     }
     cd $kwerc_root
 
-    if(~ $#perm_redir_to 1)
+    if {~ $#perm_redir_to 1} {
         perm_redirect $perm_redir_to
-    for(l in $perm_redir_patterns) {
+    }
+    for(l = $perm_redir_patterns) {
         p=$$l
         r=$p(1)
         # If target is absolute, then pattern must match whole string
-        if(~ $p(2) http://* https://*)
+        if {~ $p(2) http://* https://*} {
             r='^'$r
+        }
         t=`{ echo $req_path | sed 's!'^$r^'!'^$p(2)^'!' } # Malicious danger!
 
-        if(! ~ $"t '' $req_path)
+        if {! ~ $^t '' $req_path} {
             perm_redirect $t
+        }
     }
 
     setup_handlers
 
-    for(h in $extraHttpHeaders)
+    for(h = $extraHttpHeaders) {
         echo $h
+    }
     echo 'Content-Type: '^$http_content_type
     echo # End of HTTP headers
 
-    dprint $"SERVER_NAME^$"REQUEST_URI - $"HTTP_USER_AGENT - $"REQUEST_METHOD - $"handler_body_main - $"master_template
+    dprint $^SERVER_NAME^$^REQUEST_URI - $^HTTP_USER_AGENT - $^REQUEST_METHOD - $^handler_body_main - $^master_template
 
-    if(~ $REQUEST_METHOD HEAD)
+    if {~ $REQUEST_METHOD HEAD} {
         exit
+    }
 
     template $master_template | awk_buffer
 }

@@ -6,12 +6,13 @@ fn dprint { echo $* >[1=2] }
 fn escape_html { sed 's/&/\&amp;/g; s/</\&lt;/g; s/>/\&gt;/g' $* }
 
 fn http_redirect {
-    if(~ $1 http://* https://*)
+    if {~ $1 http://* https://*} {
         t=$1
-    if not if(~ $1 /*)
-        t=$"base_url^$1
-    if not
-        t=$"base_url^$"req_path^$1
+    } {~ $1 /*} {
+        t=$^base_url^$1
+    } {
+        t=$^base_url^$^req_path^$1
+    }
     echo 'Status: '^$2^'
 Location: '^$t^'
 
@@ -24,26 +25,25 @@ fn post_redirect { http_redirect $1 '303 See Other' }
 # Note: should check if content type is application/x-www-form-urlencoded?
 # Should compare with http://www.shelldorado.com/scripts/cmds/urlgetopt.txt
 fn load_post_args {
-    if(~ $REQUEST_METHOD POST && ~ $#post_args 0) {
-        ifs='&
-'       for(pair in `{cat}) {
-            ifs='=' { pair=`{echo -n $pair} }
+    if {~ $REQUEST_METHOD POST && ~ $#post_args 0} {
+        for(pair = `` \&\n {cat}) {
+            pair=`` '=' {echo -n $pair}
             n='post_arg_'^`{echo $pair(1)|urldecode|tr -cd 'a-zA-Z0-9_'}
             post_args=( $post_args $n )
-            ifs=() { $n=`{echo -n $pair(2)|urldecode|tr -d ''} }
+            $n=`` () {echo -n $pair(2)|urldecode|tr -d ''}
         }
         pair=()
-    }
-    if not
+    } {
         status='No POST or post args already loaded'
+    }
 }
 # Status is () if at least one arg is found. DEPRECATED: access vars directly.
 fn get_post_args {
     load_post_args
     _status='No post arg matches'
-    for(n in $*) {
+    for(n = $*) {
         v=post_arg_$n
-        if(! ~ $#$v 0) {
+        if {! ~ $#$v 0} {
             $n=$$v
             _status=()
         }
@@ -53,14 +53,16 @@ fn get_post_args {
 
 # This seems slightly improve performance, but might depend on httpd buffering behavior.
 fn awk_buffer {
-    $awk '{
+    $awk '
+    {
         buf = buf $0"\n"
-        if(length(buf) > 1400) {
+        if (length(buf) > 1400) {
             printf "%s", buf
             buf = ""
         }
     }
-    END { printf "%s", buf }'
+    END { printf "%s", buf }
+    '
 }
 
 fn urldecode {
@@ -76,75 +78,79 @@ fn urldecode {
         hextab ["7"] = 7; hextab ["F"] = hextab ["f"] = 15;
     }
     {
-    decoded = ""
-    i = 1
-    len = length ($0)
-    while ( i <= len ) {
-        c = substr ($0, i, 1)
-        if ( c == "%" ) {
-            if ( i+2 <= len ) {
-                c1 = substr ($0, i+1, 1)
-                c2 = substr ($0, i+2, 1)
-                if ( hextab [c1] == "" || hextab [c2] == "" ) {
-                    print "WARNING: invalid hex encoding: %" c1 c2 | "cat >&2"
+        decoded = ""
+        i = 1
+        len = length ($0)
+        while ( i <= len ) {
+            c = substr ($0, i, 1)
+            if (c == "%") {
+                if (i+2 <= len) {
+                    c1 = substr ($0, i+1, 1)
+                    c2 = substr ($0, i+2, 1)
+                    if (hextab [c1] == "" || hextab [c2] == "") {
+                        print "WARNING: invalid hex encoding: %" c1 c2 | "cat >&2"
+                    } else {
+                        code = 0 + hextab [c1] * 16 + hextab [c2] + 0
+                        c = sprintf ("%c", code)
+                        i = i + 2
+                    }
                 } else {
-                    code = 0 + hextab [c1] * 16 + hextab [c2] + 0
-                    c = sprintf ("%c", code)
-                    i = i + 2
+                    print "WARNING: invalid % encoding: " substr ($0, i, len - i)
                 }
-            } else {
-                print "WARNING: invalid % encoding: " substr ($0, i, len - i)
+            } else if (c == "+") {
+                c = " "
             }
-        } else if ( c == "+" ) {
-            c = " "
+            decoded = decoded c
+            ++i
         }
-        decoded = decoded c
-        ++i
+        printf "%s", decoded
     }
-    printf "%s", decoded
-    }
-'
+    '
 }
 
 fn urlencode {
     $awk '
     BEGIN {
-    # We assume an awk implementation that is just plain dumb.
-    # We will convert an character to its ASCII value with the
-    # table ord[], and produce two-digit hexadecimal output
-    # without the printf("%02X") feature.
+        # We assume an awk implementation that is just plain dumb.
+        # We will convert an character to its ASCII value with the
+        # table ord[], and produce two-digit hexadecimal output
+        # without the printf("%02X") feature.
 
-    EOL = "%0A"     # "end of line" string (encoded)
-    split ("1 2 3 4 5 6 7 8 9 A B C D E F", hextab, " ")
-    hextab [0] = 0
-    for ( i=1; i<=255; ++i ) ord [ sprintf ("%c", i) "" ] = i + 0
-    if ("'^$"EncodeEOL^'" == "yes") EncodeEOL = 1; else EncodeEOL = 0
+        EOL = "%0A" # "end of line" string (encoded)
+        split ("1 2 3 4 5 6 7 8 9 A B C D E F", hextab, " ")
+        hextab [0] = 0
+        for (i=1; i<=255; ++i)
+            ord [ sprintf ("%c", i) "" ] = i + 0
+        if ("'^$^EncodeEOL^'" == "yes")
+            EncodeEOL = 1
+        else
+            EncodeEOL = 0
     }
     {
-    encoded = ""
-    for ( i=1; i<=length ($0); ++i ) {
-        c = substr ($0, i, 1)
-        if ( c ~ /[a-zA-Z0-9.-]/ ) {
-        encoded = encoded c     # safe character
-        } else if ( c == " " ) {
-        encoded = encoded "+"   # special handling
+        encoded = ""
+        for (i=1; i<=length ($0); ++i) {
+            c = substr ($0, i, 1)
+            if (c ~ /[a-zA-Z0-9.-]/) {
+                encoded = encoded c     # safe character
+            } else if (c == " ") {
+                encoded = encoded "+"   # special handling
+            } else {
+                # unsafe character, encode it as a two-digit hex-number
+                lo = ord [c] % 16
+                hi = int (ord [c] / 16);
+                encoded = encoded "%" hextab [hi] hextab [lo]
+            }
+        }
+        if (EncodeEOL) {
+            printf ("%s", encoded EOL)
         } else {
-        # unsafe character, encode it as a two-digit hex-number
-        lo = ord [c] % 16
-        hi = int (ord [c] / 16);
-        encoded = encoded "%" hextab [hi] hextab [lo]
+            print encoded
         }
     }
-    if ( EncodeEOL ) {
-        printf ("%s", encoded EOL)
-    } else {
-        print encoded
-    }
-    }
     END {
-        #if ( EncodeEOL ) print ""
+        #if (EncodeEOL) print ""
     }
-' $*
+    ' $*
 }
 
 # Cookies
@@ -152,14 +158,14 @@ fn set_cookie {
     # TODO: should check input values more carefully
     name=$1
     val=$2
-    extraHttpHeaders=( $extraHttpHeaders 'Set-cookie: '^$"name^'='^$"val^'; path=/;' )
+    extraHttpHeaders=( $extraHttpHeaders 'Set-cookie: '^$^name^'='^$^val^'; path=/;' )
 }
 fn get_cookie {
-    ifs=';' { co=`{echo $HTTP_COOKIE} }
+    co=`` ';' {echo $HTTP_COOKIE}
 
     # XXX: we might be adding a trailing new line?
     # The ' ?' is needed to deal with '; ' inter-cookie delimiter
-    { for(c in $co) echo $c } | sed -n 's/^ ?'$1'=//p'
+    { for(c = $co) echo $c } | sed -n 's/^ ?'$1'=//p'
 }
 
 fn static_file {
@@ -171,18 +177,19 @@ fn static_file {
 
 fn select_mime {
     m='text/plain'
-    if(~ $1 *.css)
+    if {~ $1 *.css} {
         m='text/css'
-    if not if(~ $1 *.ico)
+    } {~ $1 *.ico} {
         m='image/x-icon'
-    if not if(~ $1 *.png)
+    } {~ $1 *.png} {
         m='image/png'
-    if not if(~ $1 *.jpg *.jpeg)
+    } {~ $1 *.jpg *.jpeg} {
         m='image/jpeg'
-    if not if(~ $1 *.gif)
+    } {~ $1 *.gif} {
         m='image/gif'
-    if not if(~ $1 *.pdf)
+    } {~ $1 *.pdf} {
         m='application/pdf'
+    }
     echo $m
 }
 
@@ -202,47 +209,48 @@ fn ll_addh {
     $1=( $_l $$1 )
 }
 
-NEW_LINE='
-'
-
 ################################################################################
 # Utils to be used from config files
 
 fn conf_perm_redirect {
-    if(~ $#* 1)
+    if {~ $#* 1} {
         perm_redir_to=$1
-    if not
+    } {
         ll_addh perm_redir_patterns $1 $2
+    }
 }
 
 fn get_tpl_file {
     cd $sitedir
-    if(test -f _kwerc/tpl/$1)
+    if {test -f _kwerc/tpl/$1} {
         file=$sitedir/_kwerc/tpl/$1
-    for(i in $args) {
-        if(test -d $i) {
+    }
+    for(i = $args) {
+        if {test -d $i} {
             cd $i
-            if(test -f _kwerc/tpl/$1)
+            if {test -f _kwerc/tpl/$1} {
                 file=`{pwd}^/_kwerc/tpl/$1
+            }
         }
     }
     cd $kwerc_root
-    if(! ~ $#file 0)
+    if {! ~ $#file 0} {
         echo -n $file
-    if not if(test -f $sitedir/_kwerc/tpl/$1)
+    } {test -f $sitedir/_kwerc/tpl/$1} {
         echo -n $sitedir/_kwerc/tpl/$1
-    if not if(test -f tpl/$1.local)
+    } {test -f tpl/$1.local} {
         echo -n tpl/$1.local
-    if not if(test -f tpl/$1)
+    } {test -f tpl/$1} {
         echo -n tpl/$1
-    if not
+    } {
         status='Can''t find tpl file: '$1
+    }
 }
 
 fn template {
     $awk '
     function pr(str) {
-        if(lastc !~ "[{(]")
+        if (lastc !~ "[{(]")
             gsub(/''/, "''''", str)
         printf "%s", str
     }
@@ -251,11 +259,11 @@ fn template {
 
         lastc = c
         end = "\n"
-        if(c == "%")
+        if (c == "%")
             end = ""
-        else if(c == "(")
+        else if (c == "(")
             printf "echo -n "
-        else if(c ~ "[})]") {
+        else if (c ~ "[})]") {
             end = "''\n"
             printf "echo -n ''"
         }
@@ -275,24 +283,25 @@ fn template {
         next
     }
     {
-        if(lastc == "%")
+        if (lastc == "%")
             trans("}")
         n = split($0, a, "%")
         pr(a[1])
-        for(i=2; i<=n; i++) {
+        for (i=2; i<=n; i++) {
             c = substr(a[i], 1, 1)
             rest = substr(a[i], 2)
 
-            if((lastc !~ "[({]" && c ~ "[({]") ||
-               (lastc == "{" && c == "}") ||
-               (lastc == "(" && c == ")"))
+            if ((lastc !~ "[({]" && c ~ "[({]") ||
+                (lastc == "{" && c == "}") ||
+                (lastc == "(" && c == ")"))
                 trans(c)
-            else if(c == "%")
+            else if (c == "%")
                 pr("%")
             else
                 pr("%" c)
             pr(rest)
         }
         pr("\n")
-    }' | rc $rcargs
+    }
+    ' $* | es
 }
