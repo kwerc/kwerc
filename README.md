@@ -30,7 +30,7 @@ Welcome to kyle's werc, a reimagination of Uriel's
   when invoked from shell).
 * Fast. Fits in a ~25MB ramdisk including a complete set of statically
   compiled Unix command line tools
-  ([sbase](https://core.suckless.org/sbase/). Works in a cluster. Ships
+  ([sbase](https://core.suckless.org/sbase/)). Works in a cluster. Ships
   with (currently primitive) Redis database integration.
 * Secure. kwerc has strong protections against shell injections. Es's
   quoting rules and overall sane syntax avoid security bugs that are
@@ -88,6 +88,16 @@ is some html there.
 Next up: building an actual web app. Documentation coming soon. For now,
 [werc's documentation](http://werc.cat-v.org/) is somewhat applicable.
 
+## FQA
+
+Q. CGI? Isn't that slow?
+
+A. https://www.mail-archive.com/werc9@googlegroups.com/msg00202.html
+
+Q. Static binaries? Aren't those huge/insecure/slow?
+
+A. https://sta.li/faq/
+
 ## Status
 
 kwerc is very much a work in progress. It is not production ready. There
@@ -103,9 +113,23 @@ Features coming soon:
 * Authentication
 * File uploads
 * Redis integration
+* Caching
 * PWA support
 * Documentation
 * ???
+
+## Contact
+
+m@kfarwell.org
+
+## IWP9
+
+I will be at [IWP9](http://iwp9.org/), 14-19 June @ UWaterloo. Find me
+if you have kwerc-related ideas or feedback or want to hack on kwerc.
+
+## Donate
+
+[Just Send The Money](https://github.com/sponsors/kfarwell)
 
 ## License
 
