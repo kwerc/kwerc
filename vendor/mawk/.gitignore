@@ -6,3 +6,4 @@ man/Makefile
 man2html.tmp
 mawk
 scancode.c
+*.o
