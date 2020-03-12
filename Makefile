@@ -6,14 +6,15 @@ MANPREFIX	:= $(PREFIX)/man
 YACC		:= $(PREFIX)/vendor/yacc/oyacc
 EDIT		:= null
 
-all: yacc rc sbase mawk cgd redli
+all: yacc es sbase mawk cgd redli
 
 yacc:
 	cd vendor/yacc && ./configure
 	$(MAKE) -C vendor/yacc
 
-rc: yacc
-	$(MAKE) -C vendor/rc CC=$(CC) LDFLAGS=$(LDFLAGS) PREFIX=$(PREFIX) MANPREFIX=$(MANPREFIX) YACC=$(YACC) EDIT=$(EDIT) install
+es: yacc
+	cd vendor/es && ./configure --bindir $(PREFIX)/bin --mandir $(MANPREFIX)
+	$(MAKE) -C vendor/es install
 
 sbase:
 	$(MAKE) -C vendor/sbase CC=$(CC) LDFLAGS=$(LDFLAGS) PREFIX=$(PREFIX) MANPREFIX=$(MANPREFIX) install
@@ -33,8 +34,8 @@ redli:
 
 clean:
 	$(MAKE) -C vendor/yacc clean
-	rm $(PREFIX)/bin/rc $(MANPREFIX)/man1/rc.1
-	$(MAKE) -C vendor/rc PREFIX=$(PREFIX) MANPREFIX=$(MANPREFIX) clean
+	rm $(PREFIX)/bin/es $(PREFIX)/bin/esdebug $(MANPREFIX)/man1/es.1
+	$(MAKE) -C vendor/es PREFIX=$(PREFIX) MANPREFIX=$(MANPREFIX) clean
 	$(MAKE) -C vendor/sbase PREFIX=$(PREFIX) MANPREFIX=$(MANPREFIX) uninstall clean
 	$(MAKE) -C vendor/mawk uninstall clean
 	rm $(PREFIX)/bin/cgd; cd vendor/cgd && go clean
