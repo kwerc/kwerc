@@ -15,16 +15,12 @@ fn html_handler {
 fn txt_handler {
     # Note: Words are not broken, even if they are way beyond 80 chars long
     echo '<pre>'
-    sed 's/</\&lt;/g; s/>/\&gt;/g' < $1
+    sed 's/</\&lt;/g; s/>/\&gt;/g' < $1 | fmt -l 80 -j
     echo '</pre>'
 }
 
 fn dir_listing_handler {
-    if {~ $1 */} {
-        d=`{echo $1 | sed 's,/$,,'}
-    } {
-        d=`{dirname $1}
-    }
+    d=`{basename -d $1}
     if {~ $#d 0} { d='/' }
     echo $d|sed 's,.*//,,g; s,/$,,; s,/, / ,g; s/[\-_]/ /g; s,.*,<h1 class="dir-list-head">&</h1> <ul class="dir-list">,'
     # Symlinks suck: '/.' forces ls to list the linked dir if $d is a symlink.

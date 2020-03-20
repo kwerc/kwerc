@@ -1,10 +1,10 @@
-#!/kwerc/bin/es
+#!/tmp/kwerc/bin/es
 . ./util.es
 . ./handlers.es
 . ./resdis.es
 cd ..
 
-forbidden_uri_chars='[^a-zA-Z0-9_+-\/\.,:]'
+forbidden_uri_chars='[^a-zA-Z0-9_+\-\/\.,:]'
 
 # Expected input: ls -F style, $sitedir/path/to/files/
 #          <ls -F+x><symlink hack><Useless?><hiden files  >
@@ -34,7 +34,7 @@ fn kwerc_exec_request {
     # Note: $REQUEST_URI is not officially in CGI 1.1, but seems to be de-facto
     # Note: We only urldecode %5F->'_' because some sites (stackoverflow.com?) urlencode it in their links,
     # perhaps we should completely urldecode the whole url.
-    req_path=`{echo -n $REQUEST_URI | sed 's/?.*//; s!//+!/!g; s/%5[Ff]/_/g; s/'^$forbidden_uri_chars^'//g; s/\.\.*/./g; 1q'}
+    req_path=`{echo -n $REQUEST_URI | sed 's/\?.*//; s!//+!/!g; s/%5[Ff]/_/g; s/'^$forbidden_uri_chars^'//g; s/\.\.*/./g; 1q'}
     req_url=$base_url^$req_path
     local_path=$sitedir$req_path
     local_file=''
@@ -50,8 +50,12 @@ fn kwerc_exec_request {
         perm_redirect `{echo $req_path | sed 's,/index$,/,'}
     }
 
-    if {~ $local_path */ && test -d $local_path} {
-        local_path=$local_path^'index'
+    if {~ $local_path */} {
+        if {test -d $local_path} {
+            local_path=$local_path^'index'
+        } {ls `{basename -d $local_path}^* >/dev/null >[2=1]} {
+            perm_redirect `{echo $req_path | sed 's,/+$,,'}
+        }
     } {~ $req_path *'.' *',' *';' *':'} {
         perm_redirect `{echo $req_path | sed 's/[.,;:)]$//'}
     } {test -d $local_path} {

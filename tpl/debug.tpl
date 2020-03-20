@@ -14,10 +14,4 @@ if {! ~ $#post_arg_command 0 && ! ~ $#post_arg_command ''} {
     echo '</pre>'
 }
 %}
-
-<hr><pre>
-% env | escape_html
-</pre><hr>
-
-% umask
 % }
