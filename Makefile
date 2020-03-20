@@ -1,23 +1,21 @@
 export
-CC		:= musl-gcc
+CC		:= musl-gcc # note: 9base overrides (musl breaks some commands)
 LDFLAGS		:= -static
+OBJTYPE		:= x86_64
 PREFIX		:= $(dir $(realpath $(firstword $(MAKEFILE_LIST))))
 MANPREFIX	:= $(PREFIX)/man
-YACC		:= $(PREFIX)/vendor/yacc/oyacc
+PLAN9		:= $(PREFIX)/vendor/9base
+YACC		:= $(PREFIX)/vendor/9base/yacc/yacc -S
 EDIT		:= null
 
-all: yacc es sbase mawk cgd redli
+all: 9base es mawk cgd redli
 
-yacc:
-	cd vendor/yacc && ./configure
-	$(MAKE) -C vendor/yacc
+9base:
+	$(MAKE) -C vendor/9base CC=cc LDFLAGS=$(LDFLAGS) OBJTYPE=$(OBJTYPE) PREFIX=$(PREFIX) MANPREFIX=$(MANPREFIX) install
 
-es: yacc
+es: 9base
 	cd vendor/es && ./configure --bindir $(PREFIX)/bin --mandir $(MANPREFIX)
 	$(MAKE) -C vendor/es install
-
-sbase:
-	$(MAKE) -C vendor/sbase CC=$(CC) LDFLAGS=$(LDFLAGS) PREFIX=$(PREFIX) MANPREFIX=$(MANPREFIX) install
 
 mawk:
 	touch vendor/mawk/array.c vendor/mawk/array.h vendor/mawk/parse.c vendor/mawk/parse.h
@@ -33,10 +31,9 @@ redli:
 	mkdir -p $(PREFIX)/bin && cp vendor/redli/redli $(PREFIX)/bin/
 
 clean:
-	$(MAKE) -C vendor/yacc clean
+	$(MAKE) -C vendor/9base PREFIX=$(PREFIX) MANPREFIX=$(MANPREFIX) uninstall clean
 	rm $(PREFIX)/bin/es $(PREFIX)/bin/esdebug $(MANPREFIX)/man1/es.1
 	$(MAKE) -C vendor/es PREFIX=$(PREFIX) MANPREFIX=$(MANPREFIX) clean
-	$(MAKE) -C vendor/sbase PREFIX=$(PREFIX) MANPREFIX=$(MANPREFIX) uninstall clean
 	$(MAKE) -C vendor/mawk uninstall clean
 	rm $(PREFIX)/bin/cgd; cd vendor/cgd && go clean
 	rm $(PREFIX)/bin/redli; cd vendor/redli && go clean
