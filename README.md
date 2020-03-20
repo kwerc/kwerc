@@ -28,9 +28,9 @@ Welcome to kyle's werc, a reimagination of Uriel's
   you can use inline from es. Or, again, easily integrate your favourite
   language (note some languages come with a significant performance hit
   when invoked from shell).
-* Fast. Fits in a ~25MB ramdisk including a complete set of statically
+* Fast. Fits in a ~65MB ramdisk including a complete set of statically
   compiled Unix command line tools
-  ([sbase](https://core.suckless.org/sbase/)). Works in a cluster. Ships
+  ([9base](https://tools.suckless.org/9base/)). Works in a cluster. Ships
   with (currently primitive) Redis database integration.
 * Secure. kwerc has strong protections against shell injections. Es's
   quoting rules and overall sane syntax avoid security bugs that are
@@ -60,19 +60,17 @@ $ make
 ```
 
 Here is a brief overview of these dependencies:
-* cgd: A CGI web server. You can use something else instead if
-  you prefer -- documentation forthcoming.
-* es: The es interpreter. This one's pretty important. Though, if you
-  really want, you could easily port kwerc to rc or another shell.
+* es: The es interpreter. This one's pretty important. Though if you
+  really want you could port kwerc to rc or another shell pretty easily.
+* 9base: Various Plan 9 tools ported to Unix. These aren't POSIX but
+  they're fairly close so with a few modifications to kwerc you could
+  use your system binaries or sbase or busybox or so instead. You will
+  want these to be statically compiled for maximum performance.
 * mawk: A fast awk interpreter. You should be able to replace this with
   any awk interpreter -- just change $awk in your kwerc config.
 * redli: A Redis client, used by es/resdis.es. Totally optional.
-* sbase: Portable, static, suckless Unix tools. You can skip this and
-  use your system binaries, but there may be some breakage and a
-  performance hit. 9base is mostly compatible but some tools don't play
-  nice with musl and you will need to modify sed regex.
-* yacc: OpenBSD's portable yacc. Build dependency for es. You can use
-  your system yacc instead if you have one. HP-UX yacc doesn't work.
+* cgd: A CGI web server. You can use something else instead if
+  you prefer -- documentation forthcoming.
 
 ## Usage
 
@@ -124,8 +122,8 @@ m@kfarwell.org
 
 ## IWP9
 
-I will be at [IWP9](http://iwp9.org/), 14-19 June @ UWaterloo. Find me
-if you have kwerc-related ideas or feedback or want to hack on kwerc.
+I will be at [IWP9](http://iwp9.org/). Find me if you have kwerc-related
+ideas or feedback or want to hack on kwerc.
 
 ## Donate
 
@@ -147,6 +145,9 @@ maht, yiyus, cinap_lenrek, khm and many others.
 
 kwerc incorporates many of the changes from Garbeam's werc fork,
 [swerc](https://git.suckless.org/swerc).
+
+Thanks as well to everyone involved with the various dependency projects
+under vendor/.
 
 Ideas for kwerc come from a variety of projects where I've employed
 werc, including VRLFP, Tokumei, Gelato Labs, and werchan. Thanks to
