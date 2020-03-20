@@ -1,0 +1,10 @@
+# join - join unix port from plan9
+# Depends on ../lib9
+
+TARG      = join
+
+include ../std.mk
+
+pre-uninstall:
+
+post-install:
