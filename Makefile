@@ -8,7 +8,7 @@ PLAN9		:= $(PREFIX)/vendor/9base
 YACC		:= $(PREFIX)/vendor/9base/yacc/yacc -S
 EDIT		:= null
 
-all: 9base es mawk cgd redli
+all: 9base es mawk cgd bat redli
 
 9base:
 	$(MAKE) -C vendor/9base CC=cc LDFLAGS=$(LDFLAGS) OBJTYPE=$(OBJTYPE) PREFIX=$(PREFIX) MANPREFIX=$(MANPREFIX) install
@@ -26,6 +26,10 @@ cgd:
 	cd vendor/cgd && go build -ldflags "-linkmode external -extldflags -static"
 	mkdir -p $(PREFIX)/bin && cp vendor/cgd/cgd $(PREFIX)/bin/
 
+bat:
+	cd vendor/bat && go build -ldflags "-linkmode external -extldflags -static"
+	mkdir -p $(PREFIX)/bin && cp vendor/bat/bat $(PREFIX)/bin/
+
 redli:
 	cd vendor/redli && go build -ldflags "-linkmode external -extldflags -static"
 	mkdir -p $(PREFIX)/bin && cp vendor/redli/redli $(PREFIX)/bin/
@@ -36,4 +40,5 @@ clean:
 	$(MAKE) -C vendor/es PREFIX=$(PREFIX) MANPREFIX=$(MANPREFIX) clean
 	$(MAKE) -C vendor/mawk uninstall clean
 	rm $(PREFIX)/bin/cgd; cd vendor/cgd && go clean
+	rm $(PREFIX)/bin/bat; cd vendor/bat && go clean
 	rm $(PREFIX)/bin/redli; cd vendor/redli && go clean
