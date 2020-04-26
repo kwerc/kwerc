@@ -29,6 +29,7 @@ SUBDIRS  = lib9\
 	mtime\
 	pbd\
 	primes\
+	pwd\
 	read\
 	rm\
 	sha1sum\

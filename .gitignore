@@ -25,6 +25,7 @@ mkdir/mkdir
 mtime/mtime
 pbd/pbd
 primes/primes
+pwd/pwd
 read/read
 rm/rm
 sed/sed
