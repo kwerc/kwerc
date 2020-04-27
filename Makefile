@@ -8,7 +8,13 @@ PLAN9		:= $(PREFIX)/vendor/9base
 YACC		:= $(PREFIX)/vendor/9base/yacc/yacc -S
 EDIT		:= null
 
-all: 9base es mawk jq cgd bat redli espath
+.PHONY: all deps kwerc 9base es mawk jq cgd bat redli clean
+
+all: deps kwerc
+
+deps: 9base es mawk jq cgd bat redli
+
+kwerc: espath chmod
 
 9base:
 	$(MAKE) -C vendor/9base CC=cc LDFLAGS=$(LDFLAGS) OBJTYPE=$(OBJTYPE) PREFIX=$(PREFIX) MANPREFIX=$(MANPREFIX) install
@@ -43,6 +49,10 @@ redli:
 espath:
 	sed '1c#!'$(PREFIX)'bin/es' $(PREFIX)/es/kwerc.es > $(PREFIX)/es/kwerc.es.tmp
 	mv $(PREFIX)/es/kwerc.es.tmp $(PREFIX)/es/kwerc.es
+
+chmod:
+	chmod u+x $(PREFIX)/es/kwerc.es
+	chmod go-rwx $(PREFIX)/config.example
 
 clean:
 	$(MAKE) -C vendor/9base PREFIX=$(PREFIX) MANPREFIX=$(MANPREFIX) uninstall clean
