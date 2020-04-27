@@ -28,7 +28,7 @@ Welcome to kyle's werc, a reimagination of Uriel's
   you can use inline from es. Or, again, easily integrate your favourite
   language (note some languages come with a significant performance hit
   when invoked from shell).
-* Fast. Fits in a ~65MB ramdisk including a complete set of statically
+* Fast. Fits in a ~75MB ramdisk including a complete set of statically
   compiled Unix command line tools
   ([9base](https://tools.suckless.org/9base/)). Works in a cluster. Ships
   with (currently primitive) Redis database integration.
@@ -68,16 +68,15 @@ Here is a brief overview of these dependencies:
   want these to be statically compiled for maximum performance.
 * mawk: A fast awk interpreter. You should be able to replace this with
   any awk interpreter -- just change $awk in your kwerc config.
-* redli: A Redis client, used by es/resdis.es. Totally optional.
+* jq: A JSON parser, used for ORY auth. Optional.
+* bat: An HTTP client (like curl), used for ORY auth. Optional.
+* redli: A Redis client, used by es/resdis.es. Optional.
 * cgd: A CGI web server. You can use something else instead if
   you prefer -- documentation forthcoming.
 
 ## Usage
 
-1. Edit the first line of es/kwerc.es to point to
-   /wherever/you/installed/kwerc/bin/es.
-2. Copy config.example to config and make changes if needed.
-3. `./bin/cgd -c es/kwerc.es`
+`./bin/cgd -c es/kwerc.es`
 
 Now visit http://localhost:3333 and you should be greeted with a
 beautiful empty page. You can check the page source and make sure there
