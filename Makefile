@@ -8,7 +8,7 @@ PLAN9		:= $(PREFIX)/vendor/9base
 YACC		:= $(PREFIX)/vendor/9base/yacc/yacc -S
 EDIT		:= null
 
-all: 9base es mawk jq cgd bat redli
+all: 9base es mawk jq cgd bat redli espath
 
 9base:
 	$(MAKE) -C vendor/9base CC=cc LDFLAGS=$(LDFLAGS) OBJTYPE=$(OBJTYPE) PREFIX=$(PREFIX) MANPREFIX=$(MANPREFIX) install
@@ -40,6 +40,10 @@ redli:
 	cd vendor/redli && go build -ldflags "-linkmode external -extldflags -static"
 	mkdir -p $(PREFIX)/bin && cp vendor/redli/redli $(PREFIX)/bin/
 
+espath:
+	sed '1c#!'$(PREFIX)'bin/es' $(PREFIX)/es/kwerc.es > $(PREFIX)/es/kwerc.es.tmp
+	mv $(PREFIX)/es/kwerc.es.tmp $(PREFIX)/es/kwerc.es
+
 clean:
 	$(MAKE) -C vendor/9base PREFIX=$(PREFIX) MANPREFIX=$(MANPREFIX) uninstall clean
 	rm $(PREFIX)/bin/es $(PREFIX)/bin/esdebug $(MANPREFIX)/man1/es.1
@@ -50,3 +54,5 @@ clean:
 	rm $(PREFIX)/bin/cgd; cd vendor/cgd && go clean
 	rm $(PREFIX)/bin/bat; cd vendor/bat && go clean
 	rm $(PREFIX)/bin/redli; cd vendor/redli && go clean
+	sed '1c#!/path/to/kwerc/bin/es' $(PREFIX)/es/kwerc.es > $(PREFIX)/es/kwerc.es.tmp
+	mv $(PREFIX)/es/kwerc.es.tmp $(PREFIX)/es/kwerc.es

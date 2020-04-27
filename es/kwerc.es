@@ -1,4 +1,4 @@
-#!/tmp/kwerc/bin/es
+#!/path/to/kwerc/bin/es
 . ./util.es
 . ./handlers.es
 . ./resdis.es
