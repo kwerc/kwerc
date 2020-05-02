@@ -4,6 +4,7 @@ basename/basename
 cat/cat
 cleanname/cleanname
 cmp/cmp
+cp/cp
 date/date
 dd/dd
 diff/diff
