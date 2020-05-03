@@ -4,6 +4,7 @@ import (
 	"flag"
 	"log"
 	"os"
+	"strings"
 
 	"net"
 	"net/http"
@@ -14,8 +15,9 @@ import (
 var cmd = flag.String("c", "", "CGI program to run")
 var pwd = flag.String("w", "", "Working dir for CGI")
 var serveFcgi = flag.Bool("f", false, "Run as a FCGI 'server' instead of HTTP")
-var debug = flag.Bool("debug", false, "Print debug msgs to stderr.")
-var address = flag.String("a", ":3333", "Listen address")
+var debug = flag.Bool("debug", false, "Print debug msgs to stderr")
+var address = flag.String("a", ":42069", "Listen address")
+var envVars = flag.String("e", "", "Comma-separated list of environment variables to preserve")
 
 func main() {
 	flag.Usage = usage
@@ -33,11 +35,16 @@ func main() {
 
 	os.Setenv("PATH", os.Getenv("PATH")+":.")
 
+	envList := []string{"PATH", "PLAN9"}
+	for _, envVar := range strings.Split(*envVars, ",") {
+		envList = append(envList, envVar)
+	}
+
 	h := &cgi.Handler{
 		Path:       c,
 		Root:       "/",
 		Dir:        *pwd,
-		InheritEnv: []string{"PATH", "PLAN9"},
+		InheritEnv: envList,
 	}
 
 	var err error
@@ -58,7 +65,7 @@ func main() {
 }
 
 func usage() {
-	os.Stderr.WriteString("usage: cgd [-s] -c prog [-w wdir] [-a addr]\n")
+	os.Stderr.WriteString("usage: cgd [-f] -c prog [-w wdir] [-a addr] [-e VAR1,VAR2]\n")
 	flag.PrintDefaults()
 	os.Exit(2)
 }
