@@ -1,5 +1,3 @@
 bin/
 man/
-config
-site/*
-!site/.keep
+kwerc/config
