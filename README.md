@@ -96,6 +96,11 @@ site comes with basic login/registration and a debug page.
 Next up: building an actual web app. Documentation coming soon. For now,
 [werc's documentation](http://werc.cat-v.org/) is somewhat applicable.
 
+Extensions
+----------
+
+* [kwerc-redis](https://github.com/kwerc/kwerc-redis)
+
 Frequently Questioned Answers
 -----------------------------
 
