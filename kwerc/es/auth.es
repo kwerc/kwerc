@@ -77,7 +77,7 @@ fn login_user username password {
 
     # If this was an initial login from /login form, redirect...
     if {! isempty $username && ! isempty $password} {
-        if {echo $q_redirect | grep -s '^'$allowed_user_chars'/+$'} {
+        if {echo $q_redirect | grep -s '^[a-zA-Z0-9_/]+$'} {
             # ...to the provided ?redirect=/path, if it's safe
             post_redirect $base_url$q_redirect
         } {
