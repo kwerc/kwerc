@@ -11,15 +11,19 @@ fn login_user username password {
     if {! isempty $username && ! isempty $password} {
         # Initial login from /login form
 
-        # Validate username and fix CaSe
-        username = `{echo $username | grep '^'$allowed_user_chars'+$'}
-        username = `{ls -p db/users | grep -i '^'$username'$'}
+        # Normalize case-insensitive username/email -> case-sensitive username
+        if {~ $username *@*} {
+            username = `{basename `{basename -d `{grep '^'$username'$' db/users/*/email}}}
+        } {
+            username = `{echo $username | grep '^'$allowed_user_chars'+$'}
+            username = `{ls -p db/users | grep -i '^'$username'$'}
+        }
 
-        # GTFO
+        # Goodbye
         if {isempty $username ||
             ! kryptgo checkhash -b `{cat db/users/$username/password} -p $password} {
             dprint Failed login to $username from $HTTP_USER_AGENT on $REMOTE_ADDR
-            throw error 'Wrong username or password'
+            throw error 'Wrong username/email or password'
         }
 
         # Generate new session ID
@@ -42,7 +46,7 @@ fn login_user username password {
 
         dprint $logged_user logged in from $HTTP_USER_AGENT on $REMOTE_ADDR
     } {! isempty `{get_cookie id}} {
-        # Verify existing login from session cookie
+        # Existing login from session cookie
 
         sessionid = `{get_cookie id}
 

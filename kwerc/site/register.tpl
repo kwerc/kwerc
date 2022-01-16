@@ -3,10 +3,10 @@
 
       <form action="" method="POST">
           <label for="username">Username:</label>
-          <input type="text" name="username" id="username" required="" autocomplete="username" placeholder="kwercfan42" value="%(`{echo $^p_username | escape_html}%)">
+          <input type="text" name="username" id="username" required autocomplete="username" placeholder="kwercfan42" value="%(`{echo $^p_username | escape_html}%)">
 
           <label for="password">Password:</label>
-          <input type="password" name="password" id="password" required="" minlength="8" autocomplete="new-password" placeholder="••••••••••••••••">
+          <input type="password" name="password" id="password" required minlength="8" autocomplete="new-password" placeholder="••••••••••••••••">
 
           <button type="submit">Register</button>
       </form>
