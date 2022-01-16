@@ -212,7 +212,7 @@ fn escape_html {
 }
 
 fn sanitize_partial_url {
-    url = `{cat | sed 's/[^a-zA-Z0-9-~+_.?#=!&;,\/:%@$|*\''()\\x80-\\xff]//g; s/''/\&#039;/g'}
+    url = `{cat | sed 's/ /%20/g; s/[^a-zA-Z0-9-~+_.?#=!&;,\/:%@$|*\''()\\x80-\\xff]//g; s/''/\&#039;/g'}
 
     deep_strip url '%0d'
     deep_strip url '%0a'
