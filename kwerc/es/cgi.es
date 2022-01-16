@@ -26,9 +26,9 @@ fn load_post_args {
     if {~ $REQUEST_METHOD POST && ~ $#post_args 0} {
         for (pair = `` \&\n {cat}) {
             pair = `` '=' {echo -n $pair}
-            n = 'p_'^`{echo $pair(1) | urldecode | tr -cd 'a-zA-Z0-9_'}
+            n = 'p_'^`{echo $pair(1) | urldecode | /bin/tr -cd 'a-zA-Z0-9_'}
             post_args = ($post_args $n)
-            $n = `` () {echo -n $pair(2) | urldecode | tr -d ''}
+            $n = `` () {echo -n $pair(2) | urldecode | /bin/tr -d ''}
         }
         pair = ()
     }
