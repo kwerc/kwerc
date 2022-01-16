@@ -27,7 +27,7 @@ mawk:
 	$(MAKE) -C vendor/mawk install
 
 kryptgo:
-	go get golang.org/x/crypto/bcrypt
+	go get -u golang.org/x/crypto/bcrypt
 	cd vendor/kryptgo && go build -ldflags "-extldflags -static"
 	mkdir -p $(PREFIX)/bin && cp vendor/kryptgo/kryptgo $(PREFIX)/bin/
 
