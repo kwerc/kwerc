@@ -8,9 +8,9 @@ YACC        := $(PREFIX)/vendor/9base/yacc/yacc -S
 EDIT        := null
 GO111MODULE := off
 
-.PHONY: all deps kwerc permissions 9base es mawk kryptgo cgd clean
+.PHONY: all deps permissions 9base es mawk kryptgo cgd clean
 
-all: permissions deps kwerc
+all: permissions deps
 
 deps: 9base es mawk kryptgo cgd
 
@@ -35,15 +35,10 @@ cgd:
 	cd vendor/cgd && go build -ldflags "-linkmode external -extldflags -static"
 	mkdir -p $(PREFIX)/bin && cp vendor/cgd/cgd $(PREFIX)/bin/
 
-kwerc:
-	sed '1s,.*,#!'$(PREFIX)'/bin/es,' $(PREFIX)/kwerc/es/kwerc.es > $(PREFIX)/kwerc/es/kwerc.es.tmp
-	mv $(PREFIX)/kwerc/es/kwerc.es.tmp $(PREFIX)/kwerc/es/kwerc.es
-	chmod 750 $(PREFIX)/kwerc/es/kwerc.es
-
 permissions:
 	find . $(PREFIX) -type d -exec chmod 2750 {} ';'
 	find . $(PREFIX) -type f -exec chmod 640 {} ';'
-	chmod 750 vendor/es/configure vendor/mawk/configure
+	chmod 750 vendor/es/configure vendor/mawk/configure $(PREFIX)/kwerc/es/kwerc.es
 
 clean:
 	$(MAKE) -C vendor/9base PREFIX=$(PREFIX) MANPREFIX=$(MANPREFIX) uninstall clean
@@ -51,5 +46,3 @@ clean:
 	$(MAKE) -C vendor/mawk uninstall clean
 	rm $(PREFIX)/bin/kryptgo; cd vendor/kryptgo && go clean
 	rm $(PREFIX)/bin/cgd; cd vendor/cgd && go clean
-	sed '1c#!/path/to/kwerc/bin/es' $(PREFIX)/kwerc/es/kwerc.es > $(PREFIX)/kwerc/es/kwerc.es.tmp
-	mv $(PREFIX)/kwerc/es/kwerc.es.tmp $(PREFIX)/kwerc/es/kwerc.es

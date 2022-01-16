@@ -1,4 +1,4 @@
-#!/path/to/kwerc/bin/es
+#!../../bin/es
 
 path = (`{../../bin/pwd | ../../bin/sed 's,kwerc/es,bin,'})
 
