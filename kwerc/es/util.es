@@ -90,6 +90,13 @@ fn os cmd args {
     $kwerc_root/../bin/$cmd $args
 }
 
+# Benchmark command
+fn time cmd {
+    t = `{/usr/bin/date +%s.%N}
+    $cmd
+    echo `{- `{/usr/bin/date +%s.%N} $t}
+}
+
 # Catch errors for display
 fn try f {
     catch @ e msg {
