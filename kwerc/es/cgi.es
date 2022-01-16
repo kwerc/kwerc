@@ -111,7 +111,11 @@ fn urlencode {
 
 # Cookies
 fn set_cookie name val expiry {
-    echo 'Set-cookie: '^$^name^'='^$^val^'; Expires='$^expiry'; Path=/; Secure; HttpOnly'
+    if {isempty $expiry} {
+        echo 'Set-cookie: '^$^name^'='^$^val^'; Path=/; Secure; HttpOnly'
+    } {
+        echo 'Set-cookie: '^$^name^'='^$^val^'; Expires='$^expiry'; Path=/; Secure; HttpOnly'
+    }
 }
 fn get_cookie name {
     co = `` ';' {echo $HTTP_COOKIE}
