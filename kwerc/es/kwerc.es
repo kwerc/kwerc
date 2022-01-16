@@ -1,6 +1,7 @@
 #!../../bin/es
-
 path = (`{../../bin/pwd | ../../bin/sed 's,kwerc/es,bin,'})
+
+LANG = 'C.UTF-8'
 
 . ./cgi.es
 . ./util.es
@@ -8,21 +9,28 @@ path = (`{../../bin/pwd | ../../bin/sed 's,kwerc/es,bin,'})
 cd ..
 
 kwerc_root = `{pwd}
-if {~ $HTTPS on} {
-    base_url = https://$SERVER_NAME
-} {
-    base_url = http://$SERVER_NAME
-}
-req_path = `{echo -n $REQUEST_URI | sed 's/\?.*//; s!//+!/!g; s/%5[Ff]/_/g; s/[^a-zA-Z0-9_+\-\/\.,:]//g; s/\.\.*/./g; 1q'}
-local_path = $kwerc_root/site$req_path
-local_file = ''
-master_template = tpl/master.tpl
-REMOTE_ADDR = `{echo $REMOTE_ADDR | sed 's/\.[0-9]*\.[0-9]*$//'}^.xxx.xxx # anonymize IPs to first 2 octets
-dateun = `{date -un}
+
+http_content_type = 'text/html;charset=UTF-8'
 
 if {test -f config} {
     . config
 }
+
+site = $SERVER_NAME
+if {~ $HTTPS on} {
+    protocol = https
+} {
+    protocol = http
+}
+REMOTE_ADDR = `{echo $REMOTE_ADDR | sed 's/\.[0-9]*\.[0-9]*$//'}^.xxx.xxx # anonymize IPs to first 2 octets
+base_url = $protocol://$site
+dateun = `{date -un}
+
+req_path = `{echo -n $REQUEST_URI | sed 's/\?.*//; s!//+!/!g; s/%5[Ff]/_/g; s/[^a-zA-Z0-9_+\-\/\.,:]//g; s/\.\.*/./g; 1q'}
+local_path = $kwerc_root/site$req_path
+local_file = ''
+args = `` / {echo -n $req_path}
+master_template = tpl/master.tpl
 
 # Preload post args for templates where cgi's stdin is not accessible
 if {~ $REQUEST_METHOD POST} {
@@ -58,10 +66,10 @@ if {~ $local_path */} {
 # Figure out how to handle this file
 setup_handlers
 
-# End of HTTP headers
-echo 'Content-Type: text/html'$NEWLINE
+echo 'Content-Type: '^$http_content_type
+echo # End of HTTP headers
 
-# Log request
+# Logging
 dprint $^SERVER_NAME^$^REQUEST_URI - $^HTTP_USER_AGENT - $^REQUEST_METHOD - $^handler_body - $^master_template
 
 if {~ $REQUEST_METHOD HEAD} {
