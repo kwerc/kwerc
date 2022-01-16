@@ -181,6 +181,10 @@ fn setup_handlers {
         try . $local_path.es
     }
 
+    if {~ $req_path /api/*} {
+        master_template = tpl/plain.tpl
+    }
+
     if {test -f $local_path.tpl} {
         local_file = $local_path.tpl
         handler_body = (template $local_file)
@@ -194,6 +198,8 @@ fn setup_handlers {
     } {test -f `{echo $local_path | sed 's/\/[^\/]*$//'}^.tpl} {
         local_file = `{echo $local_path | sed 's/\/[^\/]*$//'}^.tpl
         handler_body = (template $local_file)
+    } {~ $req_path /api/*} {
+        handler_body = (echo)
     } {
         handler_body = (template tpl/404.tpl)
         echo 'Status: 404 Not Found'
