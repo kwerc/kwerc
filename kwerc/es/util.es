@@ -69,6 +69,20 @@ fn gt a b {
 fn ge a b {
     ~ `{awk 'BEGIN { print ('$a' >= '$b') }'} 1
 }
+fn min a b {
+    if {lt $a $b} {
+        echo $a
+    } {
+        echo $b
+    }
+}
+fn max a b {
+    if {gt $a $b} {
+        echo $a
+    } {
+        echo $b
+    }
+}
 
 # Use external command rather than shell builtin
 fn os cmd args {
