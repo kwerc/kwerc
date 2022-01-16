@@ -1,36 +1,6 @@
 NEWLINE = '
 '
 
-# Check if $var is unset, an empty string, or a nil/empty Redis key
-fn isempty var {
-    ~ $var () || ~ $var '' || ~ $^var '(nil)' || ~ $^var '(empty list or set)' ||
-    ~ $^var '(empty,list,or,set)' || ~ $^var '(empty array)' || ~ $^var '(empty,array)'
-}
-
-# Check if $item is in space-delimited $list
-fn in item list {
-    ~ `{awk 'BEGIN { split("'$^list'", array); for (i in array) if (array[i] == "'$item'") print "true" }'} true
-}
-
-# Recursively strip string from variable
-# e.g. '%0%0%0DDD', '%0D' -> ''
-fn deep_strip var str {                        
-    $var = `{echo $$var | sed 's/'$str'//g'}
-    if {echo $$var | grep -s $str} {                          
-        deep_strip $var $str
-    }
-}
-
-# Reverse lines
-fn tac {
-    awk '{ a[i++] = $0 } END { for (j = i - 1; j >= 0;) print a[j--] }'
-}
-
-# 'Tue Aug 16 17:03:52 CDT 1977' -> 19770816
-fn yyyymmdd date {
-    echo $date | sed 's/....(...).(..)..............(....)/\3\1\2/; s/Jan/01/; s/Feb/02/; s/Mar/03/; s/Apr/04/; s/May/05/; s/Jun/06/; s/Jul/07/; s/Aug/08/; s/Sep/09/; s/Oct/10/; s/Nov/11/; s/Dec/12/'
-}
-
 # Arithmetic
 fn + a b {
     awk 'BEGIN { printf "%f", '$a' + '$b' }' | sed 's/\.?0*$//'
@@ -85,7 +55,32 @@ fn max a b {
     }
 }
 
-# Use external command rather than shell builtin
+# Check if $var is unset, an empty string, or a nil/empty Redis key
+fn isempty var {
+    ~ $var () || ~ $var '' || ~ $^var '(nil)' || ~ $^var '(empty list or set)' ||
+    ~ $^var '(empty,list,or,set)' || ~ $^var '(empty array)' || ~ $^var '(empty,array)'
+}
+
+# Check if $1 is in $2, space-delimited
+fn in item list {
+    ~ `{awk 'BEGIN { split("'$^list'", array); for (i in array) if (array[i] == "'$item'") print "true" }'} true
+}
+
+# Recursively strip string from variable
+# e.g. '%0%0%0DDD', '%0D' -> ''
+fn deep_strip var str {
+    $var = `{echo $$var | sed 's/'$str'//g'}
+    if {echo $$var | grep -s $str} {
+        deep_strip $var $str
+    }
+}
+
+# Reverse lines
+fn tac {
+    awk '{ a[i++] = $0 } END { for (j = i - 1; j >= 0;) print a[j--] }'
+}
+
+# Use "OS" command rather than shell builtin
 fn os cmd args {
     $kwerc_root/../bin/$cmd $args
 }
@@ -95,6 +90,11 @@ fn time cmd {
     t = `{/usr/bin/date +%s.%N}
     $cmd
     echo `{- `{/usr/bin/date +%s.%N} $t}
+}
+
+# 'Tue Aug 16 17:03:52 CDT 1977' -> 19770816
+fn yyyymmdd date {
+    echo $date | sed 's/....(...).(..)..............(....)/\3\1\2/; s/Jan/01/; s/Feb/02/; s/Mar/03/; s/Apr/04/; s/May/05/; s/Jun/06/; s/Jul/07/; s/Aug/08/; s/Sep/09/; s/Oct/10/; s/Nov/11/; s/Dec/12/'
 }
 
 # Catch errors for display
