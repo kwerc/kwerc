@@ -3,7 +3,8 @@ NEWLINE = '
 
 # Check if $var is unset, an empty string, or a nil/empty Redis key
 fn isempty var {
-    ~ $var () || ~ $var '' || ~ $^var '(nil)' || ~ $^var '(empty list or set)' || ~ $^var '(empty,list,or,set)'
+    ~ $var () || ~ $var '' || ~ $^var '(nil)' || ~ $^var '(empty list or set)' ||
+    ~ $^var '(empty,list,or,set)' || ~ $^var '(empty array)' || ~ $^var '(empty,array)'
 }
 
 # Check if $item is in space-delimited $list
