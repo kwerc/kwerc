@@ -116,7 +116,7 @@ fn try f {
 # If not logged in, redirect to /login and back
 fn require_login {
     if {!logged_in} {
-        post_redirect $base_url/login?redirect'='$req_path
+        post_redirect /login?redirect'='$req_path
     }
 }
 

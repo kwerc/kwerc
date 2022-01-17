@@ -83,10 +83,10 @@ fn login_user username password {
     if {! isempty $username && ! isempty $password} {
         if {echo $q_redirect | grep -s '^[a-zA-Z0-9_/]+$'} {
             # ...to the provided ?redirect=/path, if it's safe
-            post_redirect $base_url$q_redirect
+            post_redirect $q_redirect
         } {
             # ...to the homepage
-            post_redirect $base_url
+            post_redirect /
         }
     }
 }
@@ -98,7 +98,7 @@ fn logout_user {
         rm -r db/sessions/$sessionid
     }
     set_cookie id logout 'Thu, 01 Jan 1970 00:00:00 GMT'
-    post_redirect $base_url/login
+    post_redirect /login
 }
 
 fn logged_in { ! isempty $logged_user }
