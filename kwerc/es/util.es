@@ -80,6 +80,11 @@ fn tac {
     awk '{ a[i++] = $0 } END { for (j = i - 1; j >= 0;) print a[j--] }'
 }
 
+# Randomize order of lines
+fn shuf {
+    awk '{print rand(), $0}' | sort -n | sed 's/^[0-9.]* //'
+}
+
 # Use "OS" command rather than shell builtin
 fn os cmd args {
     $kwerc_root/../bin/$cmd $args
