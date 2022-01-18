@@ -97,9 +97,16 @@ fn time cmd {
     echo `{- `{/usr/bin/date +%s.%N} $t}
 }
 
-# 'Tue Aug 16 17:03:52 CDT 1977' -> 19770816
+# date(1) output -> YYYYMMDD format
+# e.g. 'Tue Aug 16 17:03:52 CDT 1977' -> 19770816
 fn yyyymmdd date {
     echo $date | sed 's/....(...).(..)..............(....)/\3\1\2/; s/Jan/01/; s/Feb/02/; s/Mar/03/; s/Apr/04/; s/May/05/; s/Jun/06/; s/Jul/07/; s/Aug/08/; s/Sep/09/; s/Oct/10/; s/Nov/11/; s/Dec/12/'
+}
+
+# date(1) output -> HTTP cookie format
+# e.g. 'Tue Aug 16 17:03:52 CDT 1977' -> 'Tue, 16 Aug 1977 17:03:52 CDT'
+fn cookiedate date {
+    echo $date | sed 's/(...) (...) (..) (........) (...) (....)/\1, \3 \2 \6 \4 \5/; s/  / 0/'
 }
 
 # Catch errors for display

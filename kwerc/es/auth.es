@@ -74,9 +74,9 @@ fn login_user username password {
 
     # Set session cookie with expiration as min($expiry, $expiryabs)
     if {lt $expiry $expiryabs} {
-        set_cookie id $sessionid `{date -u $expiry | sed 's/(...) (...) (..) (........) (...) (....)/\1, \3 \2 \6 \4 \5/; s/  / 0/'}
+        set_cookie id $sessionid `{date -u $expiry | cookiedate}
     } {
-        set_cookie id $sessionid `{date -u $expiryabs | sed 's/(...) (...) (..) (........) (...) (....)/\1, \3 \2 \6 \4 \5/; s/  / 0/'}
+        set_cookie id $sessionid `{date -u $expiryabs | cookiedate}
     }
 
     # If this was an initial login from /login form, redirect...
