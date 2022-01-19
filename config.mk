@@ -12,7 +12,7 @@ OBJTYPE     = 386
 
 # Linux/BSD
 #CFLAGS      += -Wall -Wno-missing-braces -Wno-parentheses -Wno-switch -c -I. -DPREFIX="\"${PREFIX}\""
-CFLAGS      += -c -I. -DPLAN9PORT -DPREFIX="\"${PREFIX}\""
+CFLAGS      += -c -I. -DPLAN9PORT -DPREFIX="\"${PREFIX}\"" -fcommon
 LDFLAGS     += -static
 
 # Solaris
