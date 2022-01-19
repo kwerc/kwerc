@@ -89,7 +89,7 @@ Here is a brief overview of these dependencies:
 Usage
 -----
 
-`./bin/cgd -c kwerc/es/kwerc.es`
+`./bin/cgd -c app/es/kwerc.es`
 
 kwerc should now be reachable at http://127.0.0.1:42069. The default
 site comes with basic login/registration and a debug page.

@@ -1,5 +1,5 @@
 #!../../bin/es
-path = (`{../../bin/pwd | ../../bin/sed 's,kwerc/es,bin,'})
+path = (`{../../bin/pwd | ../../bin/sed 's,app/es,bin,'})
 
 LANG = 'C.UTF-8'
 

@@ -38,7 +38,7 @@ cgd:
 permissions:
 	find . $(PREFIX) -type d -exec chmod 2750 {} ';'
 	find . $(PREFIX) -type f -exec chmod 640 {} ';'
-	chmod 750 vendor/es/configure vendor/mawk/configure $(PREFIX)/kwerc/es/kwerc.es
+	chmod 750 vendor/es/configure vendor/mawk/configure $(PREFIX)/app/es/kwerc.es
 
 clean:
 	$(MAKE) -C vendor/9base PREFIX=$(PREFIX) MANPREFIX=$(MANPREFIX) uninstall clean
